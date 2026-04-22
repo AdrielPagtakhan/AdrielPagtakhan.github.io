@@ -1,1 +1,0 @@
-# AdrielPagtakhan.github.io
