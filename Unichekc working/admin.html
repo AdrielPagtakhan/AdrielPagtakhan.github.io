@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniCheck Admin | Dashboard</title>
+  <link rel="icon" type="image/x-icon" href="/assets/logo-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div id="adminOverlay" class="admin-overlay"></div>
+
+<div class="admin-container">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar" id="adminSidebar">
+    <div class="sidebar-header">
+      <div style="display:flex;align-items:center;gap:11px;">
+        <img src="assets/logo-icon.png" alt="UniCheck" class="sidebar-logo-img" onerror="this.src='assets/logo.png'">
+        <div>
+          <div style="font-family:var(--font-head);font-weight:800;font-size:1.12rem;color:#fff;letter-spacing:-.3px;line-height:1.1;">Unicheck</div>
+          <div class="admin-tag">Admin Portal</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-sep"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Management</div>
+      <ul>
+        <li id="tabProducts" class="active"><span class="material-icons">inventory_2</span> Products</li>
+        <li id="tabOrders"><span class="material-icons">receipt_long</span> Orders</li>
+      </ul>
+      <div class="sidebar-section-label">Insights</div>
+      <ul>
+        <li id="tabAnalytics"><span class="material-icons">bar_chart</span> Analytics</li>
+      </ul>
+      <div class="sidebar-section-label">Communication</div>
+      <ul>
+        <li id="tabChat">
+          <span class="material-icons">chat</span> Customer Chat
+          <span id="chatUnreadBadge" style="background:var(--red);color:#fff;font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:auto;display:none;">0</span>
+        </li>
+        <li id="tabSettings"><span class="material-icons">settings</span> Settings</li>
+      </ul>
+      <div class="sidebar-section-label" style="margin-top:16px;">Account</div>
+      <ul>
+        <li id="logoutBtn" style="color:rgba(255,100,100,.85);"><span class="material-icons" style="color:rgba(255,100,100,.85);">logout</span> Sign Out</li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarInitial" style="overflow:hidden;">
+          <img id="sidebarAvatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%;">
+          <span id="sidebarAvatarLetter">A</span>
+        </div>
+        <div class="sidebar-user-info">
+          <p>Administrator</p>
+          <span id="sidebarEmail">admin@unicheck.com</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN PANEL ═══ -->
+  <main class="main-panel">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="menuBtn" class="admin-hamburger" aria-label="Menu"><span class="material-icons">menu</span></button>
+        <h1 id="mainTitle">Product Manager</h1>
+      </div>
+      <div class="user-info"></div>
+    </header>
+
+    <!-- ═══ PRODUCTS SECTION ═══ -->
+    <div id="productsSection" class="page-content">
+
+      <!-- PRODUCT HUB -->
+      <div class="prod-hub">
+        <div class="prod-hub-intro">
+          <h2 class="prod-hub-title">Product Management</h2>
+          <p class="prod-hub-sub">Manage your entire catalog, inventory, and customer feedback from one place.</p>
+        </div>
+        <div class="prod-hub-cards">
+
+          <!-- Card 1: Add Product -->
+          <button class="prod-hub-card prod-hub-card--add" onclick="openBundleTypeChooser()">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap">
+              <span class="material-icons phc-icon">add_circle</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">Add Product</span>
+              <span class="phc-desc">Publish a new item to the store catalog</span>
+            </div>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 2: View & Edit -->
+          <button class="prod-hub-card prod-hub-card--edit" onclick="openProdModal('view')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap">
+              <span class="material-icons phc-icon">inventory_2</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">View &amp; Edit Products</span>
+              <span class="phc-desc">Browse inventory, update stock and pricing</span>
+            </div>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 3: Reviews -->
+          <button class="prod-hub-card prod-hub-card--reviews" onclick="openProdModal('reviews')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap">
+              <span class="material-icons phc-icon">rate_review</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">Product Reviews</span>
+              <span class="phc-desc">Moderate and manage customer feedback</span>
+            </div>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 4: Announcements -->
+          <button class="prod-hub-card phc--announce" onclick="openToolModal('announcements')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap" style="background:linear-gradient(135deg,#0057B8,#0096FF);">
+              <span class="material-icons phc-icon">campaign</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">Announcements</span>
+              <span class="phc-desc">Post store-wide announcements &amp; pickup alerts</span>
+            </div>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 5: Coupons -->
+          <button class="prod-hub-card phc--coupons" onclick="openToolModal('coupons')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap" style="background:linear-gradient(135deg,#059669,#10B981);">
+              <span class="material-icons phc-icon">local_offer</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">Coupon Manager</span>
+              <span class="phc-desc">Create and manage discount codes</span>
+            </div>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="prod-hub-stats">
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:var(--blue);">inventory_2</span>
+            <div>
+              <span class="phs-num" id="hubTotalProducts">—</span>
+              <span class="phs-lbl">Total Products</span>
+            </div>
+          </div>
+          <div class="phs-divider"></div>
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:var(--green);">check_circle</span>
+            <div>
+              <span class="phs-num" id="hubInStock">—</span>
+              <span class="phs-lbl">In Stock</span>
+            </div>
+          </div>
+          <div class="phs-divider"></div>
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:var(--red);">warning</span>
+            <div>
+              <span class="phs-num" id="hubLowStock">—</span>
+              <span class="phs-lbl">Low / Out of Stock</span>
+            </div>
+          </div>
+          <div class="phs-divider"></div>
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:#FF6B35;">star</span>
+            <div>
+              <span class="phs-num" id="hubReviewCount">—</span>
+              <span class="phs-lbl">Pending Reviews</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden product list (still used by admin.js) -->
+      <div id="productList" style="display:none;"></div>
+      <span id="productCount" style="display:none;"></span>
+    </div>
+
+    <!-- ═══ ORDERS SECTION ═══ -->
+    <div id="ordersSection" class="page-content" style="display:none;">
+
+      <!-- ORDER HUB -->
+      <div class="prod-hub order-hub">
+        <div class="prod-hub-intro">
+          <h2 class="prod-hub-title">Order Management</h2>
+          <p class="prod-hub-sub">Handle requests, fulfillment, payments, exchanges, and history from one place.</p>
+        </div>
+        <div class="prod-hub-cards order-hub-cards">
+
+          <!-- Card 1: New Order Requests -->
+          <button class="prod-hub-card ohc--pending" onclick="openOrderHub('pending')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap" style="background:linear-gradient(135deg,#F59E0B,#D97706);">
+              <span class="material-icons phc-icon">inbox</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">New Order Requests</span>
+              <span class="phc-desc">Review and approve incoming orders</span>
+            </div>
+            <span class="ohc-badge" id="ohBadgePending">0</span>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 2: Fulfillment & Packing -->
+          <button class="prod-hub-card ohc--fulfillment" onclick="openOrderHub('fulfillment')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap" style="background:linear-gradient(135deg,#0057B8,#003a80);">
+              <span class="material-icons phc-icon">inventory</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">Fulfillment &amp; Packing</span>
+              <span class="phc-desc">Pack orders and notify students for pickup</span>
+            </div>
+            <span class="ohc-badge ohc-badge--blue" id="ohBadgeFulfillment">0</span>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 3: Payment Verification -->
+          <button class="prod-hub-card ohc--payment" onclick="openOrderHub('payment')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap" style="background:linear-gradient(135deg,#10B981,#059669);">
+              <span class="material-icons phc-icon">verified</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">Payment Verification</span>
+              <span class="phc-desc">Check GCash/bank transfer proofs</span>
+            </div>
+            <span class="ohc-badge ohc-badge--green" id="ohBadgePayment">0</span>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 4: Returns & Exchanges -->
+          <button class="prod-hub-card ohc--returns" onclick="openOrderHub('returns')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap" style="background:linear-gradient(135deg,#7B61FF,#5B3FD8);">
+              <span class="material-icons phc-icon">sync_alt</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">Returns &amp; Exchanges</span>
+              <span class="phc-desc">Process size swaps and returns</span>
+            </div>
+            <span class="ohc-badge ohc-badge--purple" id="ohBadgeReturns">0</span>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+          <!-- Card 6: All Orders -->
+          <button class="prod-hub-card ohc--allorders" onclick="openOrderHub('allorders')">
+            <div class="phc-glow"></div>
+            <div class="phc-icon-wrap" style="background:linear-gradient(135deg,#0EA5E9,#0369A1);">
+              <span class="material-icons phc-icon">table_rows</span>
+            </div>
+            <div class="phc-body">
+              <span class="phc-label">All Orders</span>
+              <span class="phc-desc">View, filter, and manage every order</span>
+            </div>
+            <span class="ohc-badge ohc-badge--sky" id="ohBadgeAll">0</span>
+            <span class="material-icons phc-arrow">arrow_forward</span>
+          </button>
+
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="prod-hub-stats">
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:var(--blue);">receipt_long</span>
+            <div>
+              <span class="phs-num" id="ohStatTotal">—</span>
+              <span class="phs-lbl">Total Orders</span>
+            </div>
+          </div>
+          <div class="phs-divider"></div>
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:#F59E0B;">pending_actions</span>
+            <div>
+              <span class="phs-num" id="ohStatPending">—</span>
+              <span class="phs-lbl">Pending</span>
+            </div>
+          </div>
+          <div class="phs-divider"></div>
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:var(--green);">check_circle</span>
+            <div>
+              <span class="phs-num" id="ohStatProcessing">—</span>
+              <span class="phs-lbl">Processing</span>
+            </div>
+          </div>
+          <div class="phs-divider"></div>
+          <div class="phs-item">
+            <span class="material-icons phs-icon" style="color:#FF6B35;">local_shipping</span>
+            <div>
+              <span class="phs-num" id="ohStatDelivered">—</span>
+              <span class="phs-lbl">Delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden lists (used by existing JS) -->
+      <div id="orderList" style="display:none;"></div>
+      <span id="orderCount" style="display:none;"></span>
+    </div>
+
+    <!-- ═══ ORDER HUB MODALS ═══ -->
+
+    <!-- Modal 1: Pending Approval -->
+    <div id="ohModalPending" class="oh-modal-overlay" onclick="closeOhModal('pending')">
+      <div class="oh-modal" onclick="event.stopPropagation()">
+        <div class="oh-modal-header oh-header--pending">
+          <div class="oh-modal-title"><span class="material-icons">inbox</span> Pending Approval</div>
+          <button class="oh-close-btn" onclick="closeOhModal('pending')">&times;</button>
+        </div>
+        <div class="oh-modal-body">
+          <p class="oh-modal-hint">Orders waiting for your confirmation. Confirming moves them to <strong>Processing</strong>.</p>
+          <div id="ohPendingList" class="oh-order-list"><p class="oh-empty">Loading...</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2: Fulfillment & Packing -->
+    <div id="ohModalFulfillment" class="oh-modal-overlay" onclick="closeOhModal('fulfillment')">
+      <div class="oh-modal oh-modal--wide" onclick="event.stopPropagation()">
+        <div class="oh-modal-header oh-header--fulfillment">
+          <div class="oh-modal-title"><span class="material-icons">inventory</span> Prepare for Pickup/Shipping</div>
+          <button class="oh-close-btn" onclick="closeOhModal('fulfillment')">&times;</button>
+        </div>
+        <div class="oh-modal-body oh-split">
+          <div class="oh-split-left">
+            <p class="oh-modal-hint">Select a Processing order to pack.</p>
+            <div id="ohFulfillmentList" class="oh-order-list oh-order-list--sm"><p class="oh-empty">Loading...</p></div>
+          </div>
+          <div class="oh-split-right" id="ohFulfillmentDetail" style="display:none;">
+            <div class="oh-detail-title" id="ohFulTitle">Order Details</div>
+            <div class="oh-checklist" id="ohFulChecklist"></div>
+            <div class="oh-ful-actions">
+              <button class="oh-btn oh-btn--print" onclick="ohPrintReceipt()"><span class="material-icons">print</span> Print Receipt</button>
+              <button class="oh-btn oh-btn--ready" onclick="ohMarkReady()"><span class="material-icons">notifications_active</span> Notify &amp; Mark Ready</button>
+            </div>
+          </div>
+          <div class="oh-split-placeholder" id="ohFulPlaceholder">
+            <span class="material-icons" style="font-size:2.5rem;color:var(--border);">inventory_2</span>
+            <p>Select an order to start packing</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3: Payment Verification -->
+    <div id="ohModalPayment" class="oh-modal-overlay" onclick="closeOhModal('payment')">
+      <div class="oh-modal oh-modal--wide" onclick="event.stopPropagation()">
+        <div class="oh-modal-header oh-header--payment">
+          <div class="oh-modal-title"><span class="material-icons">verified</span> Verify Payments</div>
+          <button class="oh-close-btn" onclick="closeOhModal('payment')">&times;</button>
+        </div>
+        <div class="oh-modal-body oh-split">
+          <div class="oh-split-left">
+            <p class="oh-modal-hint">Orders pending payment verification. Students paid via GCash, Maya, or PayPal and submitted a reference number.</p>
+            <div id="ohPaymentList" class="oh-order-list oh-order-list--sm"><p class="oh-empty">Loading...</p></div>
+          </div>
+          <div class="oh-split-right" id="ohPaymentDetail" style="display:none;">
+            <div class="oh-detail-title" id="ohPayTitle">Payment Details</div>
+            <!-- Hidden img elements kept so JS references don't break, but they are never shown -->
+            <img id="ohProofImg" src="" alt="" style="display:none;">
+            <p id="ohProofNone" style="display:none;"></p>
+            <div class="oh-ref-check">
+              <label style="font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;">Reference Number Provided</label>
+              <div class="oh-ref-box" id="ohRefBox">—</div>
+              <p style="font-size:.76rem;color:var(--muted);margin-top:6px;">Cross-check this number in your GCash / Maya / PayPal transaction history.</p>
+            </div>
+            <!-- Order info injected here by ohShowPayDetail -->
+            <div class="oh-pay-actions" style="margin-top:14px;">
+              <button class="oh-btn oh-btn--approve" onclick="ohApprovePayment()"><span class="material-icons">check_circle</span> Approve Payment</button>
+              <button class="oh-btn oh-btn--reject" onclick="ohRejectPayment()"><span class="material-icons">cancel</span> Reject / Invalid</button>
+            </div>
+          </div>
+          <div class="oh-split-placeholder" id="ohPayPlaceholder">
+            <span class="material-icons" style="font-size:2.5rem;color:var(--border);">receipt_long</span>
+            <p>Select an order to verify its payment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 4: Returns & Exchanges -->
+    <div id="ohModalReturns" class="oh-modal-overlay" onclick="closeOhModal('returns')">
+      <div class="oh-modal oh-modal--wide" onclick="event.stopPropagation()">
+        <div class="oh-modal-header oh-header--returns">
+          <div class="oh-modal-title"><span class="material-icons">sync_alt</span> Returns, Exchanges &amp; Refunds</div>
+          <button class="oh-close-btn" onclick="closeOhModal('returns')">&times;</button>
+        </div>
+        <div class="oh-modal-body oh-split">
+          <div class="oh-split-left">
+            <p class="oh-modal-hint">Orders marked for return, size exchange, or refund requests.</p>
+            <div id="ohReturnsList" class="oh-order-list oh-order-list--sm"><p class="oh-empty">Loading...</p></div>
+          </div>
+          <div class="oh-split-right" id="ohReturnsDetail" style="display:none;">
+            <div class="oh-detail-title" id="ohRetTitle">Exchange Details</div>
+            <div class="oh-reason-box" id="ohRetReason"></div>
+            <div class="oh-swap-section">
+              <p class="oh-swap-label">Inventory Swap</p>
+              <div id="ohSwapItems"></div>
+            </div>
+            <button class="oh-btn oh-btn--approve" style="width:100%;margin-top:12px;" onclick="ohProcessExchange()">
+              <span class="material-icons">swap_horiz</span> Confirm Exchange &amp; Update Stock
+            </button>
+          </div>
+          <div class="oh-split-placeholder" id="ohRetPlaceholder">
+            <span class="material-icons" style="font-size:2.5rem;color:var(--border);">sync_alt</span>
+            <p>Select a return/exchange to process</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 6: All Orders -->
+    <div id="ohModalAllOrders" class="oh-modal-overlay" onclick="closeOhModal('allorders')">
+      <div class="oh-modal oh-modal--wide oh-modal--tall" onclick="event.stopPropagation()" style="position:relative;overflow:hidden;">
+        <div class="oh-modal-header oh-header--allorders">
+          <div class="oh-modal-title"><span class="material-icons">table_rows</span> All Orders</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto;margin-right:12px;">
+            <select id="ohAllStatusFilter" onchange="ohRenderAllOrders()" style="padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font);font-size:.8rem;background:var(--bg);color:var(--text);outline:none;">
+              <option value="">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Ready for Pickup">Ready for Pickup</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Return">Return</option>
+              <option value="Exchange">Exchange</option>
+              <option value="Refund">Refund</option>
+              <option value="Refunded">Refunded</option>
+            </select>
+            <input type="text" id="ohAllSearch" placeholder="Search..." oninput="ohRenderAllOrders()" style="padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font);font-size:.8rem;background:var(--bg);color:var(--text);outline:none;width:150px;">
+          </div>
+          <button class="oh-close-btn" onclick="closeOhModal('allorders')">&times;</button>
+        </div>
+        <div class="oh-modal-body" style="padding:16px;overflow-y:auto;max-height:calc(85vh - 80px);">
+          <div id="ohAllOrdersList" class="oh-all-grid"></div>
+        </div>
+        <!-- Detail Sub-Modal -->
+        <div id="ohAllDetailOverlay" style="display:none;position:absolute;inset:0;background:rgba(10,20,40,.55);backdrop-filter:blur(4px);z-index:10;border-radius:inherit;justify-content:center;align-items:center;padding:20px;">
+          <div id="ohAllDetailPanel" style="background:var(--card-bg);border-radius:18px;max-width:520px;width:100%;max-height:82vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.22);position:relative;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 20px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card-bg);z-index:1;border-radius:18px 18px 0 0;">
+              <span style="font-family:var(--font-head);font-weight:800;font-size:1rem;">Order Details</span>
+              <button onclick="document.getElementById('ohAllDetailOverlay').style.display='none'" style="background:none;border:1.5px solid var(--border);border-radius:8px;padding:3px 10px;cursor:pointer;font-size:1.1rem;color:var(--muted);">&times;</button>
+            </div>
+            <div id="ohAllDetail" style="padding:20px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CHAT SECTION ═══ -->
+    <div id="chatSection" class="page-content" style="display:none;">
+      <div class="fm-shell">
+
+        <!-- ════ PANEL A: Inbox ════ -->
+        <div class="fm-panel fm-panel--inbox" id="fmPanelInbox">
+          <!-- Top bar -->
+          <div class="fm-inbox-topbar">
+            <div class="fm-inbox-topbar-left">
+              <div class="fm-inbox-logo">
+                <span class="material-icons">forum</span>
+              </div>
+              <span class="fm-inbox-title">Chats</span>
+            </div>
+            <span class="fm-live-pill">● Live</span>
+          </div>
+
+          <!-- Search bar -->
+          <div class="fm-search-wrap">
+            <span class="material-icons fm-search-icon">search</span>
+            <input class="fm-search-input" id="fmSearchInput" placeholder="Search conversations…" oninput="fmFilterInbox(this.value)">
+          </div>
+
+          <!-- Conversation list -->
+          <div class="fm-inbox-list" id="chatInboxList">
+            <div class="fm-inbox-loading">
+              <div class="fm-spinner"></div>
+              Loading conversations…
+            </div>
+          </div>
+        </div>
+
+        <!-- ════ PANEL B: Chat ════ -->
+        <div class="fm-panel fm-panel--chat" id="fmPanelChat">
+
+          <!-- Empty state (desktop only) -->
+          <div class="fm-chat-empty" id="chatEmptyState">
+            <div class="fm-chat-empty-icon">
+              <span class="material-icons">waving_hand</span>
+            </div>
+            <p class="fm-chat-empty-title">Select a conversation</p>
+            <p class="fm-chat-empty-sub">Pick a chat from the left to start replying to a student</p>
+          </div>
+
+          <!-- Active chat window -->
+          <div id="adminChatWindow" style="display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0;">
+
+            <!-- Chat header -->
+            <div class="fm-chat-header">
+              <button class="fm-back-btn" id="fmBackBtn" onclick="fmShowInbox()">
+                <span class="material-icons">arrow_back_ios</span>
+              </button>
+              <div class="fm-chat-header-avatar" id="chatUserAvatarLetter">U</div>
+              <div class="fm-chat-header-info">
+                <div class="fm-chat-header-name" id="chatWithUser">—</div>
+                <div class="fm-chat-header-sub" id="chatWithSub" style="font-size:.71rem;color:var(--muted);margin-top:1px;"></div>
+              </div>
+              <div class="fm-chat-header-actions">
+                <button class="fm-icon-btn fm-icon-btn--danger" onclick="resetChatSession(window._activeChatId)" title="Reset conversation">
+                  <span class="material-icons">delete_sweep</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="fm-messages" id="adminChatMessages"></div>
+
+            <!-- Input bar -->
+            <div class="fm-input-bar">
+              <label class="fm-icon-btn fm-attach-btn" title="Send image/video">
+                <span class="material-icons">image</span>
+                <input type="file" id="adminMediaInput" accept="image/*,video/*" style="display:none;" onchange="if(this.files[0]) handleAdminMediaUpload(this.files[0])">
+              </label>
+              <div class="fm-input-wrap">
+                <input type="text" class="fm-input" id="adminChatInput" placeholder="Aa">
+              </div>
+              <button class="fm-send-btn" id="adminChatSend">
+                <span class="material-icons">send</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ ANALYTICS SECTION ═══ -->
+    <div id="analyticsSection" class="page-content" style="display:none;">
+      <div class="bento-grid">
+
+        <!-- KPI: Revenue (tall hero) -->
+        <div class="bento-card bento-hero bento-blue">
+          <div class="bento-hero-icon"><span class="material-icons">payments</span></div>
+          <div class="bento-hero-label">Total Revenue</div>
+          <div class="bento-hero-value" id="statRevenue">₱0</div>
+          <div class="bento-hero-sub">Avg <span id="statAvgOrder">₱0</span> per order</div>
+        </div>
+
+        <!-- KPI: Total Orders -->
+        <div class="bento-card bento-kpi bento-yellow">
+          <div class="bento-kpi-icon"><span class="material-icons">receipt_long</span></div>
+          <div class="bento-kpi-value" id="statTotalOrders">0</div>
+          <div class="bento-kpi-label">Total Orders</div>
+        </div>
+
+        <!-- KPI: Delivered -->
+        <div class="bento-card bento-kpi bento-green">
+          <div class="bento-kpi-icon"><span class="material-icons">check_circle</span></div>
+          <div class="bento-kpi-value" id="statDeliveredOrders">0</div>
+          <div class="bento-kpi-label">Delivered</div>
+        </div>
+
+        <!-- KPI: Pending -->
+        <div class="bento-card bento-kpi bento-red">
+          <div class="bento-kpi-icon"><span class="material-icons">pending_actions</span></div>
+          <div class="bento-kpi-value" id="statPendingOrders">0</div>
+          <div class="bento-kpi-label">Pending</div>
+        </div>
+
+        <!-- KPI: Customers -->
+        <div class="bento-card bento-kpi bento-purple">
+          <div class="bento-kpi-icon"><span class="material-icons">people</span></div>
+          <div class="bento-kpi-value" id="statTotalCustomers">0</div>
+          <div class="bento-kpi-label">Customers</div>
+        </div>
+
+        <!-- KPI: Products -->
+        <div class="bento-card bento-kpi bento-indigo">
+          <div class="bento-kpi-icon"><span class="material-icons">inventory_2</span></div>
+          <div class="bento-kpi-value" id="statTotalProducts">0</div>
+          <div class="bento-kpi-label">Products</div>
+        </div>
+
+        <!-- KPI: Cancel Rate -->
+        <div class="bento-card bento-kpi bento-rose">
+          <div class="bento-kpi-icon"><span class="material-icons">cancel</span></div>
+          <div class="bento-kpi-value" id="statCancelRate">0%</div>
+          <div class="bento-kpi-label">Cancel Rate</div>
+        </div>
+
+        <!-- Chart: Revenue last 7 days (wide) -->
+        <div class="bento-card bento-wide">
+          <div class="chart-header"><h3><span class="material-icons">trending_up</span> Revenue — Last 7 Days</h3></div>
+          <div class="chart-canvas-wrap" style="height:190px;"><canvas id="revenueChart"></canvas></div>
+        </div>
+
+        <!-- Chart: Orders by Status (medium) -->
+        <div class="bento-card bento-medium">
+          <div class="chart-header"><h3><span class="material-icons">bar_chart</span> Orders by Status</h3></div>
+          <div class="chart-canvas-wrap" style="height:200px;"><canvas id="statusChart"></canvas></div>
+        </div>
+
+        <!-- Chart: Top 5 Products (full width) -->
+        <div class="bento-card bento-full">
+          <div class="chart-header"><h3><span class="material-icons">emoji_events</span> Top 5 Products by Units Sold</h3></div>
+          <div class="chart-canvas-wrap" style="height:170px;"><canvas id="topProductsChart"></canvas></div>
+        </div>
+
+        <!-- Chart: Payment Methods (small) -->
+        <div class="bento-card bento-medium">
+          <div class="chart-header"><h3><span class="material-icons">credit_card</span> Payment Methods</h3></div>
+          <div class="chart-canvas-wrap" style="height:200px;"><canvas id="paymentChart"></canvas></div>
+        </div>
+
+        <!-- Chart: Orders by Day of Week (medium) -->
+        <div class="bento-card bento-medium">
+          <div class="chart-header"><h3><span class="material-icons">calendar_today</span> Orders by Day of Week</h3></div>
+          <div class="chart-canvas-wrap" style="height:200px;"><canvas id="dowChart"></canvas></div>
+        </div>
+
+        <!-- Chart: Fulfillment Split (small) -->
+        <div class="bento-card bento-medium">
+          <div class="chart-header"><h3><span class="material-icons">local_shipping</span> Fulfillment Split</h3></div>
+          <div class="chart-canvas-wrap" style="height:200px;"><canvas id="fulfillmentChart"></canvas></div>
+        </div>
+
+        <!-- Activity Log (full width) -->
+        <div class="bento-card bento-full">
+          <div class="chart-header" style="margin-bottom:12px;"><h3><span class="material-icons">history</span> Activity Summary</h3></div>
+          <div id="analyticsLog" class="activity-log" style="border:none;background:transparent;"><p class="loading-text">Analyzing store data...</p></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ ANNOUNCEMENTS SECTION ═══ -->
+    <!-- ═══ ANNOUNCEMENTS MODAL ═══ -->
+    <div id="announcementsSection" class="tool-modal-overlay" style="display:none;" onclick="if(event.target===this)closeToolModal('announcements')">
+      <div class="tool-modal" onclick="event.stopPropagation()">
+        <div class="tool-modal-header" style="background:linear-gradient(135deg,#0057B8,#0096FF);">
+          <div class="tool-modal-title">
+            <div class="tool-modal-icon"><span class="material-icons">campaign</span></div>
+            <div>
+              <div class="tool-modal-heading">Announcements</div>
+              <div class="tool-modal-sub">Post store-wide announcements &amp; pickup alerts</div>
+            </div>
+          </div>
+          <button class="tool-modal-close" onclick="closeToolModal('announcements')">&times;</button>
+        </div>
+        <div class="tool-modal-body">
+          <!-- Tabs -->
+          <div class="tool-tabs">
+            <button class="tool-tab active" onclick="switchToolTab(this,'announceTabs','tab-post')">
+              <span class="material-icons">add_circle</span> Post
+            </button>
+            <button class="tool-tab" onclick="switchToolTab(this,'announceTabs','tab-posted')">
+              <span class="material-icons">list</span> Posted
+            </button>
+
+          </div>
+          <div id="announceTabs">
+            <!-- Tab: Post -->
+            <div id="tab-post" class="tool-tab-panel active">
+              <div class="tool-field"><label>Title</label>
+                <input type="text" id="announceTitle" placeholder="e.g. BSIT Uniform Restocked">
+              </div>
+              <div class="tool-field"><label>Type</label>
+                <select id="announceType">
+                  <option value="general">📢 General</option>
+                  <option value="restock">📦 Restock</option>
+                  <option value="promo">🏷️ Promo</option>
+                </select>
+              </div>
+              <div class="tool-field"><label>Message</label>
+                <textarea id="announceMsg" placeholder="Write your announcement here..." rows="4"></textarea>
+              </div>
+              <button class="tool-save-btn" id="saveAnnounceBtn">
+                <span class="material-icons">send</span> Post Announcement
+              </button>
+            </div>
+            <!-- Tab: Posted -->
+            <div id="tab-posted" class="tool-tab-panel" style="display:none;">
+              <div id="announceAdminList" class="tool-list"><p class="tool-empty">Loading...</p></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ COUPONS MODAL ═══ -->
+    <div id="couponsSection" class="tool-modal-overlay" style="display:none;" onclick="if(event.target===this)closeToolModal('coupons')">
+      <div class="tool-modal" onclick="event.stopPropagation()">
+        <div class="tool-modal-header" style="background:linear-gradient(135deg,#059669,#10B981);">
+          <div class="tool-modal-title">
+            <div class="tool-modal-icon"><span class="material-icons">local_offer</span></div>
+            <div>
+              <div class="tool-modal-heading">Coupon Manager</div>
+              <div class="tool-modal-sub">Create and manage discount codes</div>
+            </div>
+          </div>
+          <button class="tool-modal-close" onclick="closeToolModal('coupons')">&times;</button>
+        </div>
+        <div class="tool-modal-body">
+          <div class="tool-tabs">
+            <button class="tool-tab active" onclick="switchToolTab(this,'couponTabs','tab-create-coupon')">
+              <span class="material-icons">add_circle</span> Create
+            </button>
+            <button class="tool-tab" onclick="switchToolTab(this,'couponTabs','tab-active-coupons')">
+              <span class="material-icons">local_offer</span> Active Coupons
+            </button>
+          </div>
+          <div id="couponTabs">
+            <!-- Tab: Create -->
+            <div id="tab-create-coupon" class="tool-tab-panel active">
+              <div class="tool-field"><label>Promo Code</label>
+                <input type="text" id="couponCode" placeholder="e.g. WELCOME10" style="text-transform:uppercase;font-weight:700;letter-spacing:.05em;">
+              </div>
+              <div class="tool-grid-2">
+                <div class="tool-field"><label>Discount Type</label>
+                  <select id="couponType">
+                    <option value="percent">Percentage (%)</option>
+                    <option value="fixed">Fixed Amount (₱)</option>
+                  </select>
+                </div>
+                <div class="tool-field"><label>Discount Value</label>
+                  <input type="number" id="couponValue" placeholder="e.g. 10">
+                </div>
+              </div>
+              <div class="tool-field"><label>Max Uses (blank = unlimited)</label>
+                <input type="number" id="couponMaxUses" placeholder="e.g. 50" min="1">
+              </div>
+              <div class="tool-grid-2">
+                <div class="tool-field"><label>Expiry Date</label>
+                  <input type="date" id="couponExpiry">
+                </div>
+                <div class="tool-field"><label>Expiry Time</label>
+                  <input type="time" id="couponExpiryTime" value="23:59">
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;margin:4px 0 16px;">
+                <input type="checkbox" id="couponActive" checked style="width:auto;margin:0;accent-color:var(--blue);">
+                <label style="margin:0;font-size:.875rem;font-weight:600;color:var(--text);">Active</label>
+              </div>
+              <button class="tool-save-btn" id="saveCouponBtn">
+                <span class="material-icons">save</span> Save Coupon
+              </button>
+            </div>
+            <!-- Tab: Active Coupons -->
+            <div id="tab-active-coupons" class="tool-tab-panel" style="display:none;">
+              <div id="couponList" class="tool-list"><p class="tool-empty">Loading coupons...</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SETTINGS SECTION ═══ -->
+    <div id="settingsSection" class="page-content" style="display:none;">
+
+      <!-- Settings Header -->
+      <div class="stg-header">
+        <div class="stg-header-icon"><span class="material-icons">settings</span></div>
+        <div>
+          <h2 class="stg-title">System Settings</h2>
+          <p class="stg-sub">Manage your store configuration, appearance, and admin account</p>
+        </div>
+      </div>
+
+      <!-- ── Row 1: Store + Shipping ── -->
+      <div class="stg-grid">
+
+        <!-- Store Configuration -->
+        <div class="stg-card">
+          <div class="stg-card-header">
+            <div class="stg-card-icon" style="background:#EBF3FF;"><span class="material-icons" style="color:#0057B8;">store</span></div>
+            <div>
+              <div class="stg-card-title">Store Configuration</div>
+              <div class="stg-card-sub">Basic store info and limits</div>
+            </div>
+          </div>
+          <div class="stg-field">
+            <label>Store Display Name</label>
+            <input type="text" id="storeNameInput" placeholder="UniCheck School Official Store">
+          </div>
+          <div class="stg-field">
+            <label>Max Order Quantity per item</label>
+            <div class="stg-input-row">
+              <input type="number" id="maxOrderQtyInput" placeholder="99" min="1" max="999">
+              <button class="stg-inline-btn" onclick="saveMaxOrderQty()">Save</button>
+            </div>
+          </div>
+          <button class="stg-save-btn" id="saveStoreNameBtn">
+            <span class="material-icons">save</span> Save Store Name
+          </button>
+        </div>
+
+        <!-- Shipping & Delivery -->
+        <div class="stg-card">
+          <div class="stg-card-header">
+            <div class="stg-card-icon" style="background:#E6FFF5;"><span class="material-icons" style="color:#059669;">local_shipping</span></div>
+            <div>
+              <div class="stg-card-title">Shipping &amp; Delivery</div>
+              <div class="stg-card-sub">Fees and order fulfillment</div>
+            </div>
+          </div>
+          <div class="stg-field">
+            <label>Delivery Shipping Fee (₱)</label>
+            <input type="number" id="shippingFeeInput" placeholder="e.g. 80" min="0">
+            <span class="stg-hint">On-site pick-up is always free for students</span>
+          </div>
+          <div class="stg-field">
+            <label>Order Cut-off Time</label>
+            <input type="time" id="orderCutoffTime" value="17:00">
+            <span class="stg-hint">Orders placed after this time process next day</span>
+          </div>
+          <button class="stg-save-btn" id="saveShippingBtn">
+            <span class="material-icons">save</span> Save Shipping Settings
+          </button>
+        </div>
+
+        <!-- Store Controls -->
+        <div class="stg-card">
+          <div class="stg-card-header">
+            <div class="stg-card-icon" style="background:#FFF3CD;"><span class="material-icons" style="color:#D97706;">toggle_on</span></div>
+            <div>
+              <div class="stg-card-title">Store Controls</div>
+              <div class="stg-card-sub">Visibility and access toggles</div>
+            </div>
+          </div>
+          <div class="stg-toggle-row">
+            <div>
+              <p class="stg-toggle-label">Maintenance Mode</p>
+              <p class="stg-toggle-desc">Hides the store from all students</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="maintenanceModeToggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="stg-toggle-row">
+            <div>
+              <p class="stg-toggle-label">Allow New Orders</p>
+              <p class="stg-toggle-desc">Temporarily pause order placement</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="allowOrdersToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="stg-toggle-row">
+            <div>
+              <p class="stg-toggle-label">Show Out-of-Stock Items</p>
+              <p class="stg-toggle-desc">Display items with zero stock</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="showOutOfStockToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <button class="stg-save-btn" id="saveMaintenanceBtn" style="margin-top:8px;">
+            <span class="material-icons">save</span> Save Store Controls
+          </button>
+        </div>
+
+        <!-- Order Policy -->
+        <div class="stg-card">
+          <div class="stg-card-header">
+            <div class="stg-card-icon" style="background:#F3E8FF;"><span class="material-icons" style="color:#7C3AED;">policy</span></div>
+            <div>
+              <div class="stg-card-title">Order Policy</div>
+              <div class="stg-card-sub">Cancellation and refund rules</div>
+            </div>
+          </div>
+          <div class="stg-field">
+            <label>Cancellation Window (hours)</label>
+            <input type="number" id="cancelWindowInput" placeholder="24" min="0" max="168">
+            <span class="stg-hint">How long after placing can a student cancel</span>
+          </div>
+          <div class="stg-field">
+            <label>Refund Window (days)</label>
+            <input type="number" id="refundWindowInput" placeholder="7" min="0" max="30">
+            <span class="stg-hint">Days after delivery a refund can be requested</span>
+          </div>
+          <div class="stg-toggle-row" style="margin-top:4px;">
+            <div>
+              <p class="stg-toggle-label">Allow Size Exchange</p>
+              <p class="stg-toggle-desc">Let students request size swaps</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="allowExchangeToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <button class="stg-save-btn" onclick="savePolicySettings()">
+            <span class="material-icons">gavel</span> Save Policy
+          </button>
+        </div>
+
+        <!-- Admin Profile -->
+        <div class="stg-card">
+          <div class="stg-card-header">
+            <div class="stg-card-icon" style="background:#EEF2FF;"><span class="material-icons" style="color:#4F46E5;">manage_accounts</span></div>
+            <div>
+              <div class="stg-card-title">Admin Profile</div>
+              <div class="stg-card-sub">Your account details</div>
+            </div>
+          </div>
+          <div class="stg-avatar-row">
+            <div style="position:relative;flex-shrink:0;">
+              <div class="sidebar-avatar" id="adminAvatarPreview" style="width:68px;height:68px;font-size:1.5rem;overflow:hidden;cursor:pointer;border-radius:50%;" onclick="document.getElementById('adminPhotoFile').click()">
+                <img id="adminAvatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                <span id="adminAvatarInitial">A</span>
+              </div>
+              <span class="material-icons" style="position:absolute;bottom:0;right:0;background:var(--blue);color:#fff;border-radius:50%;font-size:14px;padding:4px;cursor:pointer;" onclick="document.getElementById('adminPhotoFile').click()">photo_camera</span>
+            </div>
+            <div>
+              <p style="font-size:.92rem;font-weight:800;margin-bottom:3px;" id="adminDisplayName">Administrator</p>
+              <p style="font-size:.78rem;color:var(--muted);" id="adminDisplayEmail">—</p>
+              <input type="file" id="adminPhotoFile" accept="image/*" style="display:none;">
+            </div>
+          </div>
+          <div class="stg-field">
+            <label>Display Name</label>
+            <input type="text" id="adminDisplayNameInput" placeholder="Administrator">
+          </div>
+          <div class="stg-field">
+            <label>Admin Email</label>
+            <input type="text" id="settingsEmail" readonly style="background:var(--bg2);cursor:not-allowed;opacity:.7;">
+          </div>
+          <button class="stg-save-btn" id="saveAdminPhotoBtn" style="display:none;">
+            <span class="material-icons">save</span> Save Profile Photo
+          </button>
+          <button class="stg-save-btn" onclick="saveAdminDisplayName()" style="margin-top:6px;">
+            <span class="material-icons">badge</span> Save Display Name
+          </button>
+        </div>
+
+        <!-- System Info -->
+        <div class="stg-card">
+          <div class="stg-card-header">
+            <div class="stg-card-icon" style="background:#FEF3C7;"><span class="material-icons" style="color:#D97706;">info</span></div>
+            <div>
+              <div class="stg-card-title">System Information</div>
+              <div class="stg-card-sub">Version and tech stack</div>
+            </div>
+          </div>
+          <div class="stg-info-block stg-info-block--warn">
+            <span class="material-icons" style="font-size:16px;flex-shrink:0;">warning_amber</span>
+            This is a <strong>Pre-build</strong> version. Report bugs to your IT team.
+          </div>
+          <div class="stg-info-block stg-info-block--blue" style="margin-top:10px;">
+            <div class="stg-info-grid">
+              <span class="stg-info-key">Database</span><span class="stg-info-val">Cloud Firestore</span>
+              <span class="stg-info-key">Images</span><span class="stg-info-val">Base64 in Firestore</span>
+              <span class="stg-info-key">QR Receipts</span><span class="stg-info-val">Client-side generated</span>
+              <span class="stg-info-key">Maps</span><span class="stg-info-val">Google Maps API</span>
+              <span class="stg-info-key">Version</span><span class="stg-info-val">8.0 Pre-build</span>
+            </div>
+          </div>
+          <button class="stg-save-btn" style="background:var(--red);margin-top:12px;" onclick="if(confirm('Clear all cached admin data?')){localStorage.clear();showAdminToast('Cache cleared.');}">
+            <span class="material-icons">delete_sweep</span> Clear Admin Cache
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══ ADD PRODUCT MODAL ═══ -->
+<div id="addProductModal" class="pm-overlay" style="display:none;" onclick="if(event.target===this)closeProdModal('add')">
+  <div class="pm-box pm-box--wide">
+    <div class="pm-header pm-header--blue">
+      <div class="pm-header-left">
+        <div class="pm-header-icon"><span class="material-icons">add_circle</span></div>
+        <div>
+          <h2 class="pm-title">Add New Product</h2>
+          <p class="pm-subtitle">Fill in all fields to publish a new item to the store</p>
+        </div>
+      </div>
+      <button class="pm-close" onclick="closeProdModal('add')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="pm-body">
+      <div class="add-item-body">
+
+        <!-- Column 1: Info -->
+        <div class="add-item-section">
+          <div class="add-item-section-label"><span class="material-icons">info</span> Product Information</div>
+          <div class="add-form-group">
+            <label class="add-form-label">Product Name <span class="req">*</span></label>
+            <input type="text" id="productName" class="add-form-input" placeholder="e.g. BSIT Polo Shirt">
+          </div>
+          <div class="add-form-group">
+            <label class="add-form-label">Description</label>
+            <textarea id="productDescription" class="add-form-input" rows="3" placeholder="Describe the product..."></textarea>
+          </div>
+          <div class="add-form-row">
+            <div class="add-form-group">
+              <label class="add-form-label">Academic Level <span class="req">*</span></label>
+              <select id="levelSelect" class="add-form-input">
+                <option value="" disabled selected>Select Level</option>
+                <option value="college">🎓 College</option>
+                <option value="shs">📚 Senior High School</option>
+                <option value="jhs">✏️ Junior High School</option>
+              </select>
+            </div>
+            <div class="add-form-group">
+              <label class="add-form-label" id="programLabel">Program / Grade <span class="req">*</span></label>
+              <select id="programSelect" class="add-form-input"><option value="" disabled selected>Choose level first</option></select>
+            </div>
+          </div>
+          <div class="add-form-group">
+            <label class="add-form-label">Item Type</label>
+            <div class="add-type-toggle">
+              <label class="add-type-option">
+                <input type="radio" name="itemType" id="typeUniform" value="uniform" checked>
+                <span class="add-type-btn"><span class="material-icons">checkroom</span> Uniform / Prowear</span>
+              </label>
+              <label class="add-type-option">
+                <input type="radio" name="itemType" id="typePeripheral" value="peripheral">
+                <span class="add-type-btn"><span class="material-icons">style</span> Peripheral</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Images -->
+        <div class="add-item-section">
+          <div class="add-item-section-label"><span class="material-icons">photo_library</span> Product Photos</div>
+          <div class="add-dropzone" id="addDropzone" onclick="document.getElementById('productImageFiles').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="event.preventDefault();this.classList.remove('drag-over');handleMultiImageFiles(Array.from(event.dataTransfer.files),'add')">
+            <span class="material-icons add-dropzone-icon">cloud_upload</span>
+            <p class="add-dropzone-text">Drop images here or <span class="add-dropzone-link">browse</span></p>
+            <p class="add-dropzone-hint">PNG, JPG, WEBP · First image = main photo</p>
+            <input type="file" id="productImageFiles" accept="image/*" multiple style="display:none;">
+          </div>
+          <div id="addImagePreviews" class="add-image-strip"></div>
+        </div>
+
+        <!-- Column 3: Size & Price -->
+        <div class="add-item-section">
+          <div id="addSizedSection">
+            <div class="add-item-section-label"><span class="material-icons">straighten</span> Stock &amp; Pricing per Size</div>
+            <div class="size-price-table" id="addSizePriceGrid">
+              <div class="sp-header"><span>Size</span><span>Stock</span><span>Price (₱)</span><span>Active</span></div>
+            </div>
+          </div>
+          <div id="addPeripheralSection" style="display:none;">
+            <div class="add-item-section-label"><span class="material-icons">style</span> Stock &amp; Price</div>
+            <div class="peripheral-fields">
+              <div class="peripheral-field-group">
+                <label class="peripheral-field-label">Stock Quantity</label>
+                <input type="number" id="peripheralStock" class="peripheral-input" placeholder="e.g. 50" min="0" value="0">
+              </div>
+              <div class="peripheral-field-group">
+                <label class="peripheral-field-label">Price (₱)</label>
+                <input type="number" id="peripheralPrice" class="peripheral-input" placeholder="e.g. 150.00" min="0" step="0.01">
+              </div>
+            </div>
+          </div>
+          <div class="limited-offer-wrap" style="margin-top:16px;">
+            <label class="limited-toggle-row">
+              <input type="checkbox" id="addIsLimited">
+              <span class="limited-toggle-track"><span class="limited-toggle-thumb"></span></span>
+              <span class="limited-toggle-label-text"><span class="material-icons" style="font-size:15px;vertical-align:middle;">timer</span> Mark as Limited Offer</span>
+            </label>
+            <div id="addLimitedDateWrap" style="display:none;margin-top:10px;">
+              <label class="peripheral-field-label">Offer Ends On</label>
+              <input type="datetime-local" id="addLimitedUntil" class="peripheral-input">
+            </div>
+          </div>
+          <button id="addProductBtn" class="add-publish-btn" style="margin-top:16px;">
+            <span class="material-icons">rocket_launch</span> Publish Product
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIEW & EDIT PRODUCTS MODAL ═══ -->
+<div id="viewProductsModal" class="pm-overlay" style="display:none;" onclick="if(event.target===this)closeProdModal('view')">
+  <div class="pm-box pm-box--wide">
+    <div class="pm-header pm-header--indigo">
+      <div class="pm-header-left">
+        <div class="pm-header-icon"><span class="material-icons">inventory_2</span></div>
+        <div>
+          <h2 class="pm-title">Inventory &amp; Products</h2>
+          <p class="pm-subtitle">Browse, search, edit and manage all products</p>
+        </div>
+      </div>
+      <button class="pm-close" onclick="closeProdModal('view')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="pm-body">
+      <div class="pm-toolbar">
+        <div class="pm-search-wrap">
+          <span class="material-icons pm-search-icon">search</span>
+          <input type="text" id="viewProdSearch" class="pm-search-input" placeholder="Search products…" oninput="filterViewProducts(this.value)">
+        </div>
+        <select id="viewProdLevel" class="pm-filter-select" onchange="filterViewProducts(document.getElementById('viewProdSearch').value)">
+          <option value="">All Levels</option>
+          <option value="college">College</option>
+          <option value="shs">Senior High</option>
+          <option value="jhs">Junior High</option>
+        </select>
+        <select id="viewProdType" class="pm-filter-select" onchange="filterViewProducts(document.getElementById('viewProdSearch').value)">
+          <option value="">All Types</option>
+          <option value="uniform">Uniform</option>
+          <option value="peripheral">Peripheral</option>
+        </select>
+        <span id="viewProdCount" class="pm-count-badge">— items</span>
+      </div>
+      <div id="viewProductGrid" class="pm-product-grid">
+        <div class="pm-loading"><span class="material-icons pm-loading-icon">hourglass_empty</span><p>Loading products…</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PRODUCT REVIEWS MODAL ═══ -->
+<div id="reviewsModal" class="pm-overlay" style="display:none;" onclick="if(event.target===this)closeProdModal('reviews')">
+  <div class="pm-box pm-box--wide">
+    <div class="pm-header pm-header--amber">
+      <div class="pm-header-left">
+        <div class="pm-header-icon"><span class="material-icons">rate_review</span></div>
+        <div>
+          <h2 class="pm-title">Product Reviews</h2>
+          <p class="pm-subtitle">Moderate and manage all customer feedback</p>
+        </div>
+      </div>
+      <button class="pm-close" onclick="closeProdModal('reviews')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="pm-body">
+      <div class="pm-toolbar">
+        <div class="pm-search-wrap">
+          <span class="material-icons pm-search-icon">search</span>
+          <input type="text" id="reviewSearch" class="pm-search-input" placeholder="Search by product or reviewer…" oninput="filterReviews(this.value)">
+        </div>
+        <select id="reviewFilter" class="pm-filter-select" onchange="filterReviews(document.getElementById('reviewSearch').value)">
+          <option value="">All Ratings</option>
+          <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+          <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+          <option value="3">⭐⭐⭐ 3 Stars</option>
+          <option value="2">⭐⭐ 2 Stars</option>
+          <option value="1">⭐ 1 Star</option>
+        </select>
+        <span id="reviewCount" class="pm-count-badge">— reviews</span>
+      </div>
+
+      <!-- Review stats bar -->
+      <div class="review-stats-bar">
+        <div class="rsb-item">
+          <span class="rsb-num" id="rsbTotal">0</span>
+          <span class="rsb-lbl">Total Reviews</span>
+        </div>
+        <div class="rsb-sep"></div>
+        <div class="rsb-item">
+          <span class="rsb-num" id="rsbAvg" style="color:var(--yellow);">—</span>
+          <span class="rsb-lbl">Avg. Rating</span>
+        </div>
+        <div class="rsb-sep"></div>
+        <div class="rsb-item">
+          <span class="rsb-num" id="rsbPending" style="color:var(--red);">0</span>
+          <span class="rsb-lbl">Pending</span>
+        </div>
+        <div class="rsb-sep"></div>
+        <div class="rsb-item">
+          <span class="rsb-num" id="rsbApproved" style="color:var(--green);">0</span>
+          <span class="rsb-lbl">Approved</span>
+        </div>
+      </div>
+
+      <div id="reviewsList" class="pm-reviews-list">
+        <div class="pm-empty-reviews">
+          <span class="material-icons" style="font-size:3rem;color:var(--border);">rate_review</span>
+          <p>No reviews yet. Customer feedback will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PRODUCT HUB SCRIPTS ═══ -->
+<script>
+/* ── Open / Close ── */
+function openProdModal(type) {
+  const map = { add:'addProductModal', view:'viewProductsModal', reviews:'reviewsModal' };
+  const el = document.getElementById(map[type]);
+  if (!el) return;
+  el.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  el.classList.remove('pm-out');
+  el.classList.add('pm-in');
+  if (type === 'view') populateViewModal();
+  if (type === 'reviews') populateReviewsModal();
+}
+function closeProdModal(type) {
+  const map = { add:'addProductModal', view:'viewProductsModal', reviews:'reviewsModal' };
+  const el = document.getElementById(map[type]);
+  if (!el) return;
+  el.classList.add('pm-out');
+  setTimeout(() => { el.style.display = 'none'; el.classList.remove('pm-out','pm-in'); }, 300);
+  document.body.style.overflow = '';
+}
+window.openProdModal = openProdModal;
+window.closeProdModal = closeProdModal;
+
+/* ── View Products Modal ── */
+let _allProducts = [];
+let _viewModalRetries = 0;
+function populateViewModal() {
+  const grid = document.getElementById('viewProductGrid');
+  const srcItems = document.querySelectorAll('#productList [data-product-id]');
+  if (!srcItems.length) {
+    _viewModalRetries++;
+    if (_viewModalRetries > 10) {
+      grid.innerHTML = '<div class="pm-empty"><span class="material-icons">inventory_2</span><p>No products found. Add a product first.</p></div>';
+      _viewModalRetries = 0;
+      return;
+    }
+    grid.innerHTML = '<div class="pm-loading"><span class="material-icons pm-loading-icon">hourglass_empty</span><p>Loading\u2026</p></div>';
+    setTimeout(populateViewModal, 600);
+    return;
+  }
+  _viewModalRetries = 0;
+  _allProducts = Array.from(srcItems).map(el => ({
+    id: el.dataset.productId,
+    name: el.dataset.productName || el.querySelector('.product-name, h3, .prod-name')?.textContent || '\u2014',
+    level: el.dataset.level || '',
+    type: el.dataset.type || '',
+    img: el.dataset.productImg || el.querySelector('img')?.src || '',
+    el
+  }));
+  updateViewProdCount(_allProducts.length);
+  renderViewProducts(_allProducts);
+}
+function renderViewProducts(items) {
+  const grid = document.getElementById('viewProductGrid');
+  if (!items.length) {
+    grid.innerHTML = '<div class="pm-empty"><span class="material-icons">inventory_2</span><p>No products found.</p></div>';
+    return;
+  }
+  grid.innerHTML = items.map(p => `
+    <div class="pm-prod-card" onclick="openEditFromHub('${p.id}')">
+      <div class="pm-prod-thumb">
+        ${p.img ? `<img src="${p.img}" alt="${p.name}" onerror="this.style.display='none'">` : '<span class="material-icons" style="font-size:2rem;color:var(--border);">image</span>'}
+      </div>
+      <div class="pm-prod-info">
+        <span class="pm-prod-name">${p.name}</span>
+        <div class="pm-prod-tags">
+          ${p.level ? `<span class="pm-tag pm-tag--level">${p.level}</span>` : ''}
+          ${p.type ? `<span class="pm-tag pm-tag--type">${p.type}</span>` : ''}
+        </div>
+      </div>
+      <span class="material-icons pm-prod-edit-ic">edit</span>
+    </div>
+  `).join('');
+}
+function filterViewProducts(q) {
+  const lvl = document.getElementById('viewProdLevel').value;
+  const typ = document.getElementById('viewProdType').value;
+  const filtered = _allProducts.filter(p => {
+    const matchQ = !q || p.name.toLowerCase().includes(q.toLowerCase());
+    const matchL = !lvl || p.level === lvl;
+    const matchT = !typ || p.type === typ;
+    return matchQ && matchL && matchT;
+  });
+  updateViewProdCount(filtered.length);
+  renderViewProducts(filtered);
+}
+function updateViewProdCount(n) {
+  const el = document.getElementById('viewProdCount');
+  if (el) el.textContent = `${n} item${n!==1?'s':''}`;
+}
+function openEditFromHub(id) {
+  closeProdModal('view');
+  // Find the card and trigger its click to open the edit modal
+  setTimeout(() => {
+    const card = document.querySelector(`#productList [data-product-id="${id}"]`);
+    if (card) { card.click(); return; }
+    // Fallback: dispatch custom event
+    document.dispatchEvent(new CustomEvent('adminEditProduct', { detail: { id } }));
+  }, 320);
+}
+window.filterViewProducts = filterViewProducts;
+
+/* ── Reviews Modal ── */
+let _allReviews = [];
+function populateReviewsModal() {
+  // Try to read from Firestore via admin.js exposed function, else show demo
+  if (typeof window.adminLoadReviews === 'function') {
+    window.adminLoadReviews().then(reviews => {
+      _allReviews = reviews || [];
+      renderReviews(_allReviews);
+      updateReviewStats(_allReviews);
+    }).catch(() => showDemoReviews());
+  } else {
+    showDemoReviews();
+  }
+}
+function showDemoReviews() {
+  _allReviews = [];
+  renderReviews([]);
+  updateReviewStats([]);
+}
+function renderReviews(reviews) {
+  const el = document.getElementById('reviewsList');
+  const countEl = document.getElementById('reviewCount');
+  if (countEl) countEl.textContent = `${reviews.length} review${reviews.length!==1?'s':''}`;
+  if (!reviews.length) {
+    el.innerHTML = `<div class="pm-empty-reviews"><span class="material-icons" style="font-size:3rem;color:var(--border);">rate_review</span><p>No reviews found.</p></div>`;
+    return;
+  }
+  el.innerHTML = reviews.map((r, i) => `
+    <div class="pm-review-card ${r.status==='pending'?'pm-review--pending':''}">
+      <div class="pm-review-top">
+        <div class="pm-review-user">
+          <div class="pm-review-av" style="background:${['#0057B8','#00C87A','#FF6B35','#7B61FF','#FFB800'][i%5]};">${(r.userName||r.userEmail||'U')[0].toUpperCase()}</div>
+          <div>
+            <span class="pm-review-name">${r.userName||r.userEmail||'Anonymous'}</span>
+            <span class="pm-review-product">${r.productName||'Unknown Product'}</span>
+          </div>
+        </div>
+        <div class="pm-review-meta">
+          <div class="pm-review-stars">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+          <span class="pm-review-date">${r.createdAt ? new Date(r.createdAt.seconds*1000).toLocaleDateString() : 'Recently'}</span>
+        </div>
+      </div>
+      <p class="pm-review-text">${r.comment||r.text||'No comment provided.'}</p>
+      <div class="pm-review-actions">
+        ${r.status==='pending' ? `<button class="pm-rev-btn pm-rev-btn--approve" onclick="approveReview('${r.id}',this)"><span class="material-icons">check_circle</span> Approve</button>` : `<span class="pm-rev-status--approved"><span class="material-icons">check_circle</span> Approved</span>`}
+        <button class="pm-rev-btn pm-rev-btn--delete" onclick="deleteReview('${r.id}',this)"><span class="material-icons">delete</span> Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+function updateReviewStats(reviews) {
+  document.getElementById('rsbTotal').textContent = reviews.length;
+  const avg = reviews.length ? (reviews.reduce((a,r) => a+(r.rating||5), 0)/reviews.length).toFixed(1) : '—';
+  document.getElementById('rsbAvg').textContent = avg === '—' ? '—' : `${avg} ★`;
+  document.getElementById('rsbPending').textContent = reviews.filter(r => r.status==='pending').length;
+  document.getElementById('rsbApproved').textContent = reviews.filter(r => r.status==='approved').length;
+  document.getElementById('hubReviewCount').textContent = reviews.filter(r => r.status==='pending').length;
+}
+function filterReviews(q) {
+  const rating = document.getElementById('reviewFilter').value;
+  const filtered = _allReviews.filter(r => {
+    const matchQ = !q || (r.userName||'').toLowerCase().includes(q.toLowerCase()) || (r.productName||'').toLowerCase().includes(q.toLowerCase());
+    const matchR = !rating || String(r.rating) === rating;
+    return matchQ && matchR;
+  });
+  renderReviews(filtered);
+}
+function approveReview(id, btn) {
+  const card = btn.closest('.pm-review-card');
+  if (card) { card.classList.remove('pm-review--pending'); }
+  btn.outerHTML = `<span class="pm-rev-status--approved"><span class="material-icons">check_circle</span> Approved</span>`;
+  const r = _allReviews.find(r => r.id===id);
+  if (r) r.status = 'approved';
+  updateReviewStats(_allReviews);
+  if (typeof window.adminApproveReview === 'function') window.adminApproveReview(id);
+}
+function deleteReview(id, btn) {
+  const card = btn.closest('.pm-review-card');
+  if (card) { card.style.animation = 'reviewFadeOut .35s ease forwards'; setTimeout(() => card.remove(), 340); }
+  _allReviews = _allReviews.filter(r => r.id !== id);
+  updateReviewStats(_allReviews);
+  if (typeof window.adminDeleteReview === 'function') window.adminDeleteReview(id);
+}
+window.filterReviews = filterReviews;
+window.approveReview = approveReview;
+window.deleteReview = deleteReview;
+
+/* ── Hub Stats update (called by admin.js after loading products) ── */
+window.updateHubStats = function(total, inStock, lowStock) {
+  const a = document.getElementById('hubTotalProducts');
+  const b = document.getElementById('hubInStock');
+  const c = document.getElementById('hubLowStock');
+  if(a) a.textContent = total ?? '—';
+  if(b) b.textContent = inStock ?? '—';
+  if(c) c.textContent = lowStock ?? '—';
+};
+</script>
+
+<!-- ═══ PRODUCT EDIT MODAL ═══ -->
+<div id="productModal" class="modal">
+  <div class="modal-content dashboard-modal" style="max-width:740px;">
+    <div class="modal-header">
+      <div class="header-title"><span class="material-icons">edit</span><h2>Edit Product</h2></div>
+      <span id="closeModal" class="close-btn">&times;</span>
+    </div>
+    <div class="modal-grid-body">
+      <div class="modal-sidebar-preview">
+        <div class="preview-card">
+          <img id="editPreviewImg" src="https://placehold.co/200x150/f0f2f7/adb5bd?text=Preview" alt="Preview">
+          <p>Main Image Preview</p>
+        </div>
+        <div class="danger-zone">
+          <button id="deleteProduct" class="btn-outline-danger">
+            <span class="material-icons" style="font-size:16px;vertical-align:middle;">delete</span> Delete Item
+          </button>
+        </div>
+      </div>
+      <div class="modal-form-area">
+        <input id="editName" type="text" placeholder="Product Name">
+        <textarea id="editDescription" placeholder="Description" rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font);font-size:.87rem;background:var(--card-bg);color:var(--text);outline:none;resize:none;"></textarea>
+
+        <span class="sub-label" style="margin-top:8px;display:block;">Product Images <span style="font-size:.72rem;color:var(--muted);font-weight:400;">(first = main · ✏️ to adjust)</span></span>
+        <div class="multi-image-upload-box" id="editMultiImageBox" style="min-height:80px;">
+          <div id="editImagePreviews" class="multi-image-previews"></div>
+          <label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--blue);font-weight:600;margin-top:6px;">
+            <span class="material-icons" style="font-size:18px;">add_photo_alternate</span> Add More Images
+            <input type="file" id="editImageFiles" accept="image/*" multiple style="display:none;">
+          </label>
+        </div>
+
+        <select id="editLevelSelect" style="margin-top:8px;">
+          <option value="college">College</option>
+          <option value="shs">Senior High School</option>
+          <option value="jhs">Junior High School</option>
+        </select>
+        <select id="editProgramSelect"></select>
+        <select id="editTypeSelect">
+          <option value="uniform">Uniform / Prowear</option>
+          <option value="peripheral">Peripheral (Accessories)</option>
+        </select>
+
+        <!-- SALE PRICE -->
+        <div style="display:flex;align-items:center;gap:10px;margin:12px 0 4px;">
+          <input type="checkbox" id="editSalePriceToggle" style="width:auto;margin:0;">
+          <label style="margin:0;font-size:.85rem;font-weight:700;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer;" for="editSalePriceToggle">
+            🏷️ Set Sale / Discount Price
+          </label>
+        </div>
+        <div id="editSalePriceWrap" style="display:none;background:#FFF3CD;border:1.5px solid #FFD600;border-radius:10px;padding:10px 14px;margin-bottom:8px;">
+          <label style="font-size:.78rem;font-weight:700;color:#856404;display:block;margin-bottom:6px;">Sale Price (₱) — shown to customers instead of regular price</label>
+          <input type="number" id="editSalePrice" placeholder="e.g. 299" min="0" step="0.01" style="background:#fff;">
+        </div>
+
+        <!-- Sized section -->
+        <div id="editSizedSection" style="margin-top:10px;">
+          <label class="sub-label" style="margin-top:10px;display:block;">Stock & Price per Size</label>
+          <div class="size-price-grid" id="editSizePriceGrid">
+            <div class="size-price-header"><span>Size</span><span>Stock</span><span>Price (₱)</span><span>On</span></div>
+          </div>
+        </div>
+
+        <!-- Peripheral section (one-size) -->
+        <div id="editPeripheralSection" style="display:none;margin-top:10px;">
+          <label class="sub-label" style="display:block;margin-bottom:8px;"><span class="material-icons" style="font-size:15px;vertical-align:middle;">style</span> Stock &amp; Price</label>
+          <div class="peripheral-fields">
+            <div class="peripheral-field-group">
+              <label class="peripheral-field-label">Stock Quantity</label>
+              <input type="number" id="editPeripheralStock" class="peripheral-input" placeholder="e.g. 50" min="0" value="0">
+            </div>
+            <div class="peripheral-field-group">
+              <label class="peripheral-field-label">Price (₱)</label>
+              <input type="number" id="editPeripheralPrice" class="peripheral-input" placeholder="e.g. 150.00" min="0" step="0.01">
+            </div>
+          </div>
+        </div>
+
+        <!-- Limited Offer Toggle (Edit) -->
+        <div class="limited-offer-wrap" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+          <label class="limited-toggle-row">
+            <input type="checkbox" id="editIsLimited">
+            <span class="limited-toggle-track"><span class="limited-toggle-thumb"></span></span>
+            <span class="limited-toggle-label-text"><span class="material-icons" style="font-size:15px;vertical-align:middle;">timer</span> Mark as Limited Offer</span>
+          </label>
+          <div id="editLimitedDateWrap" style="display:none;margin-top:10px;">
+            <label class="peripheral-field-label">Offer Ends On</label>
+            <input type="datetime-local" id="editLimitedUntil" class="peripheral-input">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button id="saveProduct" class="btn-save">
+        <span class="material-icons" style="font-size:16px;vertical-align:middle;">save</span> Update Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ORDER MODAL ═══ -->
+<div id="orderModal" class="modal">
+  <div class="modal-content dashboard-modal" style="max-width:560px;">
+    <div class="modal-header">
+      <div class="header-title"><span class="material-icons">receipt_long</span><h2>Process Order</h2></div>
+      <span id="closeOrderModal" class="close-btn">&times;</span>
+    </div>
+    <div class="modal-form-area" style="padding:24px 28px;">
+      <div id="orderDetailBox" style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:20px;border:1px solid var(--border);">
+        <p id="modalOrderId" style="font-weight:700;margin-bottom:8px;font-size:.88rem;"></p>
+        <div id="orderCustomerInfo" style="font-size:.82rem;color:var(--muted);margin-bottom:10px;"></div>
+        <div id="orderItemsPreview" style="font-size:.85rem;color:var(--muted);"></div>
+      </div>
+      <label class="sub-label" style="display:block;margin-bottom:6px;">Update Status</label>
+      <select id="orderStatusSelect" style="width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--font);font-size:.88rem;background:var(--bg);margin-bottom:16px;outline:none;">
+        <option value="Pending">⏳ Pending</option>
+        <option value="Approved">✅ Approved</option>
+        <option value="Processing">⚙️ Processing</option>
+        <option value="Shipped">🚚 Shipped</option>
+        <option value="Delivered">📦 Delivered</option>
+        <option value="Cancelled">❌ Cancelled</option>
+      </select>
+      <label class="sub-label" style="display:block;margin-bottom:6px;">Tracking / Location Note</label>
+      <input type="text" id="orderTrackingInput" placeholder="e.g. Processing at STI Hub" style="width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--font);font-size:.88rem;background:var(--bg);outline:none;">
+      <div id="adminOrderMapWrap" style="display:none;margin-top:16px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button id="saveOrderBtn" class="btn-save">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ IMAGE ADJUST MODAL ═══ -->
+<div id="imageAdjustModal" class="modal" style="display:none;">
+  <div class="modal-content dashboard-modal" style="max-width:600px;">
+    <div class="modal-header">
+      <div class="header-title"><span class="material-icons">tune</span><h2>Adjust Image</h2></div>
+      <span id="closeImageAdjust" class="close-btn">&times;</span>
+    </div>
+    <div style="padding:20px 24px;">
+      <canvas id="adjCanvas" style="width:100%;max-height:260px;object-fit:contain;border-radius:10px;border:1px solid var(--border);display:block;"></canvas>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;">
+        <div class="adj-row"><label>Brightness</label><input type="range" id="adjBrightness" min="20" max="200" value="100"><span id="adjBrightnessVal">100%</span></div>
+        <div class="adj-row"><label>Contrast</label><input type="range" id="adjContrast" min="20" max="200" value="100"><span id="adjContrastVal">100%</span></div>
+        <div class="adj-row"><label>Saturation</label><input type="range" id="adjSaturation" min="0" max="200" value="100"><span id="adjSaturationVal">100%</span></div>
+        <div class="adj-row"><label>Scale</label><input type="range" id="adjScale" min="50" max="150" value="100"><span id="adjScaleVal">100%</span></div>
+        <div class="adj-row"><label>Rotate</label><input type="range" id="adjRotate" min="-180" max="180" value="0"><span id="adjRotateVal">0°</span></div>
+      </div>
+    </div>
+    <div class="modal-footer" style="gap:10px;">
+      <button id="adjResetBtn" class="btn-outline-danger" style="background:none;">Reset</button>
+      <button id="applyImageAdjust" class="btn-save">Apply Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOGGLE SWITCH CSS INLINE ═══ -->
+<style>
+.toggle-switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:24px;transition:.3s;}
+.toggle-slider:before{content:"";position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle-switch input:checked + .toggle-slider{background:var(--blue);}
+.toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
+.adj-row{display:flex;align-items:center;gap:10px;}
+.adj-row label{font-size:.78rem;font-weight:600;color:var(--text);width:80px;flex-shrink:0;}
+.adj-row input[type=range]{flex:1;accent-color:var(--blue);}
+.adj-row span{font-size:.75rem;color:var(--muted);min-width:36px;text-align:right;}
+.thumb-actions{position:absolute;top:3px;right:3px;display:flex;gap:3px;opacity:0;transition:opacity .2s;}
+.multi-img-thumb:hover .thumb-actions{opacity:1;}
+.thumb-edit,.thumb-remove{background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:.7rem;padding:2px 5px;line-height:1.4;}
+.thumb-edit:hover{background:var(--blue);}
+.thumb-remove:hover{background:var(--red);}
+.analytics-charts-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;}
+</style>
+
+<!-- ═══ TOAST ═══ -->
+<div id="adminToast" style="position:fixed;bottom:28px;right:28px;background:#1a1a2e;color:#fff;padding:12px 20px;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 4px 24px rgba(0,0,0,.18);z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;"></div>
+
+<script type="module" src="js/firebase.js"></script>
+<script type="module" src="js/admin.js"></script>
+
+<!-- ═══ TOGGLE SWITCH CSS INLINE ═══ -->
+<style>
+.toggle-switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:24px;transition:.3s;}
+.toggle-slider:before{content:"";position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle-switch input:checked + .toggle-slider{background:var(--blue);}
+.toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px);}
+.adj-row{display:flex;align-items:center;gap:10px;}
+.adj-row label{font-size:.78rem;font-weight:600;color:var(--text);width:80px;flex-shrink:0;}
+.adj-row input[type=range]{flex:1;accent-color:var(--blue);}
+.adj-row span{font-size:.75rem;color:var(--muted);min-width:36px;text-align:right;}
+.thumb-actions{position:absolute;top:3px;right:3px;display:flex;gap:3px;opacity:0;transition:opacity .2s;}
+.multi-img-thumb:hover .thumb-actions{opacity:1;}
+.thumb-edit,.thumb-remove{background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:.7rem;padding:2px 5px;line-height:1.4;}
+.thumb-edit:hover{background:var(--blue);}
+.thumb-remove:hover{background:var(--red);}
+.analytics-charts-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;}
+</style>
+
+<!-- ═══ TOAST ═══ -->
+<div id="adminToast" style="position:fixed;bottom:28px;right:28px;background:#1a1a2e;color:#fff;padding:12px 20px;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 4px 24px rgba(0,0,0,.18);z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;"></div>
+
+<script type="module" src="js/firebase.js"></script>
+<script type="module" src="js/admin.js"></script>
+
+<!-- ═══════════════════════════════════════════════
+     PRODUCT TYPE CHOOSER MODAL
+═══════════════════════════════════════════════ -->
+<div id="productTypeChooserModal" class="pm-overlay" style="display:none;" onclick="if(event.target===this)closeTypeChooser()">
+  <div class="pm-box ptc-box">
+    <div class="pm-header pm-header--blue">
+      <div class="pm-header-left">
+        <div class="pm-header-icon"><span class="material-icons">add_circle</span></div>
+        <div>
+          <h2 class="pm-title">What type of product?</h2>
+          <p class="pm-subtitle">Choose how this item will appear in the store</p>
+        </div>
+      </div>
+      <button class="pm-close" onclick="closeTypeChooser()"><span class="material-icons">close</span></button>
+    </div>
+    <div class="ptc-body">
+
+      <button class="ptc-card" onclick="closeTypeChooser();openProdModal('add')">
+        <div class="ptc-card-glow"></div>
+        <div class="ptc-icon-wrap ptc-icon-blue">
+          <span class="material-icons">checkroom</span>
+        </div>
+        <div class="ptc-info">
+          <h3>Normal Product</h3>
+          <p>A single item — polo shirt, PE uniform, lanyard, or any accessory. Has sizes, stock, and price per size.</p>
+          <div class="ptc-tags">
+            <span>Uniform</span><span>Peripheral</span><span>Accessory</span>
+          </div>
+        </div>
+        <span class="material-icons ptc-arrow">arrow_forward</span>
+      </button>
+
+      <button class="ptc-card" onclick="closeTypeChooser();openProdModal('bundle')">
+        <div class="ptc-card-glow"></div>
+        <div class="ptc-icon-wrap ptc-icon-yellow">
+          <span class="material-icons">shopping_basket</span>
+        </div>
+        <div class="ptc-info">
+          <h3>Set / Bundle Product</h3>
+          <p>A curated set that appears on the "Build Your Set" card on the home screen. Define the slots students must fill (e.g. Polo + PE Shirt + Lanyard).</p>
+          <div class="ptc-tags">
+            <span>Bundle Deal</span><span>Uniform Set</span><span>Freshmen Kit</span>
+          </div>
+        </div>
+        <span class="material-icons ptc-arrow">arrow_forward</span>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ADD BUNDLE/SET MODAL
+
+<!-- ═══ TYPE CHOOSER ═══ -->
+<div id="bundleTypeChooserModal" class="pm-overlay" style="display:none;" onclick="if(event.target===this)closeBundleTypeChooser()">
+  <div class="pm-box btc-box">
+    <div class="pm-header pm-header--blue">
+      <div class="pm-header-left">
+        <div class="pm-header-icon"><span class="material-icons">add_circle</span></div>
+        <div>
+          <h2 class="pm-title">Add New Product</h2>
+          <p class="pm-subtitle">What type of product would you like to create?</p>
+        </div>
+      </div>
+      <button class="pm-close" onclick="closeBundleTypeChooser()"><span class="material-icons">close</span></button>
+    </div>
+    <div class="btc-body">
+
+      <!-- Normal product -->
+      <button class="btc-card" onclick="closeBundleTypeChooser(); openProdModal('add')">
+        <div class="btc-icon btc-icon--blue"><span class="material-icons">checkroom</span></div>
+        <div class="btc-info">
+          <h3>Single Product</h3>
+          <p>A regular item — uniform, lanyard, or any accessory. Has individual sizes, stock levels, and price per size.</p>
+        </div>
+        <span class="material-icons btc-arrow">chevron_right</span>
+      </button>
+
+      <!-- Bundle -->
+      <button class="btc-card" onclick="closeBundleTypeChooser(); openCreateBundleModal()">
+        <div class="btc-icon btc-icon--yellow"><span class="material-icons">shopping_basket</span></div>
+        <div class="btc-info">
+          <h3>Bundle / Set</h3>
+          <p>Combine existing products into one purchasable set. The price is the sum of selected items, with an optional discount.</p>
+        </div>
+        <span class="material-icons btc-arrow">chevron_right</span>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CREATE BUNDLE MODAL ═══ -->
+<div id="createBundleModal" class="pm-overlay" style="display:none;" onclick="if(event.target===this)closeCreateBundleModal()">
+  <div class="pm-box pm-box--wide cb-box">
+
+    <div class="pm-header cb-header">
+      <div class="pm-header-left">
+        <div class="pm-header-icon"><span class="material-icons">shopping_basket</span></div>
+        <div>
+          <h2 class="pm-title">Create Bundle Set</h2>
+          <p class="pm-subtitle">Select existing products to group into one purchasable set</p>
+        </div>
+      </div>
+      <button class="pm-close pm-close--dark" onclick="closeCreateBundleModal()"><span class="material-icons">close</span></button>
+    </div>
+
+    <div class="cb-body">
+
+      <!-- LEFT: bundle info + selected items -->
+      <div class="cb-left">
+        <div class="cb-section-title"><span class="material-icons">info</span> Bundle Details</div>
+
+        <div class="add-form-group">
+          <label class="add-form-label">Bundle Name <span class="req">*</span></label>
+          <input type="text" id="cbName" class="add-form-input" placeholder="e.g. BSIT Complete Set">
+        </div>
+        <div class="add-form-group">
+          <label class="add-form-label">Description</label>
+          <textarea id="cbDesc" class="add-form-input" rows="2" placeholder="What's included and who it's for…"></textarea>
+        </div>
+
+        <!-- Selected items list -->
+        <div class="cb-section-title" style="margin-top:14px;"><span class="material-icons">checklist</span> Selected Items <span id="cbItemCount" style="color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0;">— pick from the right panel</span></div>
+
+        <div class="cb-selected-list" id="cbSelectedList">
+          <div class="cb-empty-selected">
+            <span class="material-icons">add_shopping_cart</span>
+            <p>No items yet. Search and pick products →</p>
+          </div>
+        </div>
+
+        <!-- Totals + discount -->
+        <div class="cb-totals-box">
+          <div class="cb-total-row">
+            <span>Subtotal</span>
+            <span id="cbSubtotal">₱0</span>
+          </div>
+          <div class="cb-total-row">
+            <span>Discount</span>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <input type="number" id="cbDiscount" class="cb-discount-input" min="0" max="100" step="1" value="0" oninput="cbRecalc()">
+              <span style="font-size:.8rem;color:var(--muted);">%</span>
+            </div>
+          </div>
+          <div class="cb-total-row cb-total-final">
+            <span>Bundle Price</span>
+            <span id="cbFinalPrice">₱0</span>
+          </div>
+        </div>
+
+        <!-- Preview card -->
+        <div class="cb-preview-wrap">
+          <div class="cb-preview-label"><span class="material-icons">visibility</span> Home Screen Preview</div>
+          <div class="dash-promo-card dash-promo-yellow cb-preview-card" style="pointer-events:none;">
+            <div class="dpc-badge dpc-badge-dark">Bundle Deal</div>
+            <span class="material-icons dpc-icon" style="color:#003a80;">shopping_basket</span>
+            <h4 style="color:#003a80;" id="cbPreviewName">Bundle Name</h4>
+            <p style="color:rgba(0,29,64,.7);" id="cbPreviewItems">0 items · ₱0</p>
+            <span class="dpc-cta" style="color:#003a80;">Build Your Set <span class="material-icons">arrow_forward</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: product picker -->
+      <div class="cb-right">
+        <div class="cb-section-title"><span class="material-icons">search</span> Pick Products</div>
+        <div class="cb-picker-toolbar">
+          <div class="cb-search-wrap">
+            <span class="material-icons" style="font-size:18px;color:var(--muted);">search</span>
+            <input type="text" class="cb-search" id="cbSearch" placeholder="Search products…" oninput="cbFilterProducts()">
+          </div>
+          <select class="add-form-input cb-level-filter" id="cbLevelFilter" onchange="cbFilterProducts()" style="width:140px;padding:8px 10px;">
+            <option value="">All Levels</option>
+            <option value="college">College</option>
+            <option value="shs">Senior High</option>
+            <option value="jhs">Junior High</option>
+          </select>
+        </div>
+
+        <div class="cb-products-list" id="cbProductList">
+          <div class="cb-empty-selected">
+            <span class="material-icons" style="animation:spin 1s linear infinite;color:var(--blue);">autorenew</span>
+            <p>Loading products…</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pm-footer">
+      <div class="cb-footer-note" id="cbFooterNote"></div>
+      <button class="pm-btn-ghost" onclick="closeCreateBundleModal()">Cancel</button>
+      <button class="pm-btn-primary" id="cbPublishBtn" onclick="cbPublishBundle()">
+        <span class="material-icons">rocket_launch</span> Publish Bundle
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* ── Type Chooser ── */
+.btc-box { max-width: 520px; }
+.btc-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.btc-card {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 20px; width: 100%;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 14px; cursor: pointer; text-align: left;
+  transition: all .22s;
+}
+.btc-card:hover { border-color: var(--blue); box-shadow: 0 4px 16px rgba(0,87,184,.1); transform: translateY(-2px); }
+.btc-icon { width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.btc-icon .material-icons { font-size: 24px; color: #fff; }
+.btc-icon--blue { background: linear-gradient(135deg,#003a80,#0057B8); }
+.btc-icon--yellow { background: linear-gradient(135deg,#b45309,#d97706); }
+.btc-info { flex: 1; }
+.btc-info h3 { font-family: var(--font-head); font-size: .97rem; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+.btc-info p { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+.btc-arrow { color: var(--muted); transition: all .22s; flex-shrink: 0; }
+.btc-card:hover .btc-arrow { color: var(--blue); transform: translateX(4px); }
+
+/* ── Create Bundle ── */
+.cb-box { max-width: 920px; }
+.cb-header { background: linear-gradient(135deg,#b45309,#d97706) !important; }
+.pm-close--dark { background: rgba(0,0,0,.15) !important; border-color: rgba(0,0,0,.2) !important; color: rgba(255,255,255,.9) !important; }
+
+.cb-body {
+  display: grid; grid-template-columns: 360px 1fr;
+  flex: 1; overflow: hidden; min-height: 0;
+}
+.cb-left {
+  border-right: 1.5px solid var(--border);
+  overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 0;
+}
+.cb-left::-webkit-scrollbar { width: 4px; }
+.cb-left::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+.cb-right {
+  overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 0;
+}
+.cb-right::-webkit-scrollbar { width: 4px; }
+.cb-right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+.cb-section-title {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .7rem; font-weight: 700; color: var(--blue);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;
+}
+.cb-section-title .material-icons { font-size: 15px; }
+
+/* Selected items list */
+.cb-selected-list {
+  flex-shrink: 0; display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: 14px; min-height: 60px;
+}
+.cb-empty-selected {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 7px; padding: 20px 12px; color: var(--muted);
+  border: 1.5px dashed var(--border); border-radius: 12px;
+}
+.cb-empty-selected .material-icons { font-size: 24px; opacity: .4; }
+.cb-empty-selected p { font-size: .78rem; text-align: center; }
+
+.cb-sel-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 11px; padding: 9px 12px;
+  animation: cbItemIn .22s cubic-bezier(.34,1.2,.64,1);
+}
+@keyframes cbItemIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.cb-sel-thumb {
+  width: 38px; height: 38px; border-radius: 8px;
+  object-fit: cover; background: var(--bg2); flex-shrink: 0;
+}
+.cb-sel-info { flex: 1; min-width: 0; }
+.cb-sel-name { font-size: .8rem; font-weight: 700; color: var(--text); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cb-sel-meta { font-size: .7rem; color: var(--muted); }
+.cb-sel-price { font-family: var(--font-head); font-size: .84rem; font-weight: 800; color: var(--blue); flex-shrink: 0; }
+.cb-sel-remove {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); display: flex; align-items: center;
+  padding: 4px; border-radius: 6px; transition: all .18s; flex-shrink: 0;
+}
+.cb-sel-remove:hover { color: var(--red); background: rgba(255,59,59,.08); }
+.cb-sel-remove .material-icons { font-size: 16px; }
+
+/* Totals */
+.cb-totals-box {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 14px; margin-bottom: 14px;
+}
+.cb-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .83rem; padding: 5px 0; color: var(--muted);
+}
+.cb-total-final {
+  font-weight: 800; color: var(--text); font-size: .95rem;
+  border-top: 1.5px solid var(--border); margin-top: 6px; padding-top: 10px;
+}
+.cb-total-final span:last-child { color: var(--blue); font-family: var(--font-head); font-size: 1.1rem; }
+.cb-discount-input {
+  width: 60px; padding: 5px 8px; border: 1.5px solid var(--border);
+  border-radius: 8px; background: var(--card-bg); color: var(--text);
+  font-family: var(--font); font-size: .82rem; text-align: center; outline: none;
+}
+.cb-discount-input:focus { border-color: var(--blue); }
+
+/* Preview */
+.cb-preview-wrap { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); }
+.cb-preview-label {
+  font-size: .68rem; font-weight: 700; color: var(--muted);
+  display: flex; align-items: center; gap: 5px;
+  text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px;
+}
+.cb-preview-label .material-icons { font-size: 13px; }
+.cb-preview-card { max-width: 100% !important; transform: scale(.92); transform-origin: left top; }
+
+/* Product picker right side */
+.cb-picker-toolbar {
+  display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.cb-search-wrap {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 8px 12px; min-width: 160px;
+}
+.cb-search {
+  flex: 1; background: none; border: none; outline: none;
+  color: var(--text); font-family: var(--font); font-size: .84rem;
+}
+.cb-products-list {
+  display: flex; flex-direction: column; gap: 8px; flex: 1;
+}
+.cb-prod-row {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card-bg); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 11px 14px; cursor: pointer;
+  transition: all .2s;
+}
+.cb-prod-row:hover { border-color: rgba(0,87,184,.35); background: var(--bg); }
+.cb-prod-row.added { border-color: var(--green); background: rgba(0,200,122,.05); }
+.cb-prod-row.out { opacity: .45; cursor: not-allowed; }
+.cb-prod-thumb {
+  width: 44px; height: 44px; border-radius: 9px;
+  object-fit: cover; background: var(--bg2); flex-shrink: 0;
+}
+.cb-prod-info { flex: 1; min-width: 0; }
+.cb-prod-name { font-size: .84rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.cb-prod-meta { font-size: .72rem; color: var(--muted); }
+.cb-prod-price { font-family: var(--font-head); font-size: .9rem; font-weight: 800; color: var(--blue); flex-shrink: 0; }
+.cb-prod-action {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s;
+}
+.cb-prod-row:hover:not(.out) .cb-prod-action { border-color: var(--blue); background: var(--blue); }
+.cb-prod-row:hover:not(.out) .cb-prod-action .material-icons { color: #fff; }
+.cb-prod-row.added .cb-prod-action { border-color: var(--green); background: var(--green); }
+.cb-prod-row.added .cb-prod-action .material-icons { color: #fff; content: 'remove'; }
+.cb-prod-action .material-icons { font-size: 16px; color: var(--muted); transition: color .18s; }
+
+.cb-footer-note {
+  flex: 1; font-size: .76rem; color: var(--muted); display: flex; align-items: center;
+}
+.cb-footer-note.error { color: var(--red); }
+.cb-footer-note.ok { color: var(--green); }
+
+/* Footer */
+.pm-footer {
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 10px; padding: 14px 20px;
+  border-top: 1.5px solid var(--border); flex-shrink: 0;
+  background: var(--bg);
+}
+.pm-btn-ghost { padding: 9px 17px; border: 1.5px solid var(--border); border-radius: 11px; background: var(--card-bg); color: var(--muted); font-family: var(--font); font-size: .84rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+.pm-btn-ghost:hover { border-color: var(--text); color: var(--text); }
+.pm-btn-primary { display: flex; align-items: center; gap: 6px; padding: 9px 20px; border: none; border-radius: 11px; background: linear-gradient(135deg,#003a80,#0057B8); color: #fff; font-family: var(--font); font-size: .84rem; font-weight: 800; cursor: pointer; transition: all .22s; }
+.pm-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,87,184,.3); }
+.pm-btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+.pm-btn-primary .material-icons, .pm-btn-ghost .material-icons { font-size: 16px; }
+
+@media (max-width: 680px) {
+  .cb-body { grid-template-columns: 1fr; }
+  .cb-left { border-right: none; border-bottom: 1.5px solid var(--border); max-height: 55vh; }
+  .cb-preview-wrap { display: none; }
+}
+</style>
+
+<script>
+/* ════════════════════════════════════════════════════
+   BUNDLE CREATOR — Admin
+   Logic: pick existing products → combine → save as
+   type:'bundle', stores bundleItems[] with product IDs
+════════════════════════════════════════════════════ */
+
+// Type chooser
+function openBundleTypeChooser() {
+  document.getElementById('bundleTypeChooserModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeBundleTypeChooser() {
+  document.getElementById('bundleTypeChooserModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── State ──
+let cbProducts = [];          // all products from admin list
+let cbSelected = new Map();   // productId → product object
+
+// ── Open bundle creator ──
+function openCreateBundleModal() {
+  cbSelected = new Map();
+  document.getElementById('cbName').value = '';
+  document.getElementById('cbDesc').value = '';
+  document.getElementById('cbDiscount').value = '0';
+  document.getElementById('cbSearch').value = '';
+  document.getElementById('cbLevelFilter').value = '';
+
+  document.getElementById('createBundleModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  cbLoadProducts();
+  cbRenderSelected();
+  cbRecalc();
+}
+function closeCreateBundleModal() {
+  document.getElementById('createBundleModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── Load existing products directly from Firestore ──
+// (DOM data-price attribute doesn't exist on admin cards, so we read from Firestore)
+async function cbLoadProducts() {
+  const listEl = document.getElementById('cbProductList');
+  listEl.innerHTML = '<div class="cb-empty-selected"><span class="material-icons" style="animation:spin 1s linear infinite;color:var(--blue);">autorenew</span><p>Loading…</p></div>';
+
+  try {
+    const snap = await window._getDocs(window._collection(window._db, 'products'));
+    cbProducts = [];
+    snap.forEach(d => {
+      const p = d.data();
+      // Skip bundles — can't put a bundle inside a bundle
+      if (p.isBundle || p.type === 'bundle') return;
+
+      // Derive a single representative price:
+      // use p.price (base price), or the lowest price across sizes, or salePrice
+      let price = Number(p.price || 0);
+      if (!price && p.prices) {
+        const vals = Object.values(p.prices).map(Number).filter(v => v > 0);
+        if (vals.length) price = Math.min(...vals);
+      }
+      if (p.salePrice && Number(p.salePrice) > 0 && Number(p.salePrice) < price) {
+        price = Number(p.salePrice);
+      }
+
+      cbProducts.push({
+        id:       d.id,
+        name:     p.name || '—',
+        level:    p.level || '',
+        program:  p.program || '',
+        type:     p.type || '',
+        price,
+        imageUrl: (Array.isArray(p.images) && p.images[0]) ? p.images[0] : (p.imageUrl || ''),
+        stock:    p.stock || {},
+        prices:   p.prices || {},
+      });
+    });
+    cbFilterProducts();
+  } catch(e) {
+    console.error('cbLoadProducts error:', e);
+    listEl.innerHTML = '<div class="cb-empty-selected"><span class="material-icons">error</span><p>Failed to load products.</p></div>';
+  }
+}
+
+// ── Filter product list ──
+function cbFilterProducts() {
+  const q = document.getElementById('cbSearch')?.value.toLowerCase() || '';
+  const lvl = document.getElementById('cbLevelFilter')?.value || '';
+  const listEl = document.getElementById('cbProductList');
+
+  let results = cbProducts.filter(p => {
+    const matchQ = !q || p.name.toLowerCase().includes(q) || (p.program||'').toLowerCase().includes(q);
+    const matchL = !lvl || p.level === lvl;
+    return matchQ && matchL;
+  });
+
+  if (!results.length) {
+    listEl.innerHTML = '<div class="cb-empty-selected"><span class="material-icons">search_off</span><p>No products found</p></div>';
+    return;
+  }
+
+  listEl.innerHTML = results.map(p => {
+    const isAdded = cbSelected.has(p.id);
+    const isOut = !p.price || p.price <= 0;
+    return `
+      <div class="cb-prod-row${isAdded?' added':''}${isOut?' out':''}"
+           onclick="${isOut?'':'cbToggleProduct(\''+p.id+'\')'}">
+        <img class="cb-prod-thumb" src="${p.imageUrl||''}"
+             onerror="this.src='https://placehold.co/44x44/f0f2f7/adb5bd?text=?'">
+        <div class="cb-prod-info">
+          <div class="cb-prod-name">${p.name}</div>
+          <div class="cb-prod-meta">${[p.level?.toUpperCase(), p.program].filter(Boolean).join(' · ')}${isOut?' · No price set':''}</div>
+        </div>
+        <div class="cb-prod-price">${p.price?'₱'+Number(p.price).toLocaleString():'—'}</div>
+        <div class="cb-prod-action">
+          <span class="material-icons">${isAdded?'remove':'add'}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Toggle add/remove a product ──
+function cbToggleProduct(id) {
+  const p = cbProducts.find(x => x.id === id);
+  if (!p) return;
+  if (cbSelected.has(id)) {
+    cbSelected.delete(id);
+  } else {
+    cbSelected.set(id, p);
+  }
+  cbRenderSelected();
+  cbFilterProducts();   // refresh list to update add/remove state
+  cbRecalc();
+}
+
+// ── Render selected items panel ──
+function cbRenderSelected() {
+  const listEl = document.getElementById('cbSelectedList');
+  const countEl = document.getElementById('cbItemCount');
+  const items = Array.from(cbSelected.values());
+
+  if (countEl) countEl.textContent = items.length ? `${items.length} item${items.length>1?'s':''}` : '— pick from the right panel';
+
+  if (!items.length) {
+    listEl.innerHTML = '<div class="cb-empty-selected"><span class="material-icons">add_shopping_cart</span><p>No items yet. Search and pick products →</p></div>';
+    return;
+  }
+
+  listEl.innerHTML = items.map(p => `
+    <div class="cb-sel-item">
+      <img class="cb-sel-thumb" src="${p.imageUrl||''}"
+           onerror="this.src='https://placehold.co/38x38/f0f2f7/adb5bd?text=?'">
+      <div class="cb-sel-info">
+        <div class="cb-sel-name">${p.name}</div>
+        <div class="cb-sel-meta">${[p.level?.toUpperCase(),p.program].filter(Boolean).join(' · ')}</div>
+      </div>
+      <div class="cb-sel-price">₱${Number(p.price).toLocaleString()}</div>
+      <button class="cb-sel-remove" onclick="cbToggleProduct('${p.id}')">
+        <span class="material-icons">close</span>
+      </button>
+    </div>`).join('');
+}
+
+// ── Recalculate totals and update preview ──
+function cbRecalc() {
+  const items = Array.from(cbSelected.values());
+  const subtotal = items.reduce((s, p) => s + Number(p.price||0), 0);
+  const disc = Math.min(100, Math.max(0, parseFloat(document.getElementById('cbDiscount')?.value)||0));
+  const final = subtotal * (1 - disc/100);
+
+  const subEl = document.getElementById('cbSubtotal');
+  const finalEl = document.getElementById('cbFinalPrice');
+  if (subEl) subEl.textContent = '₱' + subtotal.toLocaleString();
+  if (finalEl) finalEl.textContent = '₱' + Math.round(final).toLocaleString();
+
+  // Update preview card
+  const name = document.getElementById('cbName')?.value || 'Bundle Name';
+  document.getElementById('cbPreviewName').textContent = name;
+  document.getElementById('cbPreviewItems').textContent =
+    items.length
+      ? `${items.length} item${items.length>1?'s':''} · ₱${Math.round(final).toLocaleString()}`
+      : '0 items · ₱0';
+}
+
+// ── Publish bundle to Firestore ──
+async function cbPublishBundle() {
+  const name = document.getElementById('cbName')?.value.trim();
+  const desc = document.getElementById('cbDesc')?.value.trim();
+  const disc = parseFloat(document.getElementById('cbDiscount')?.value)||0;
+  const items = Array.from(cbSelected.values());
+  const noteEl = document.getElementById('cbFooterNote');
+
+  // Validation
+  if (!name) { noteEl.className='cb-footer-note error'; noteEl.textContent='⚠ Please enter a bundle name.'; return; }
+  if (items.length < 2) { noteEl.className='cb-footer-note error'; noteEl.textContent='⚠ Select at least 2 products.'; return; }
+
+  noteEl.className='cb-footer-note'; noteEl.textContent='';
+
+  const subtotal = items.reduce((s,p) => s + Number(p.price||0), 0);
+  const finalPrice = Math.round(subtotal * (1 - disc/100));
+
+  // bundleItems: store minimal refs (id + name + base price for display)
+  const bundleItems = items.map(p => ({
+    id: p.id,
+    name: p.name,
+    imageUrl: p.imageUrl || '',
+    price: Number(p.price||0),
+    level: p.level || '',
+    program: p.program || '',
+    type: p.type || '',
+  }));
+
+  const data = {
+    name,
+    description: desc,
+    type: 'bundle',
+    isBundle: true,
+    bundleItems,                    // array of product refs
+    bundleDiscount: disc,
+    price: finalPrice,              // discounted total — shown in store
+    originalPrice: subtotal,        // pre-discount total
+    imageUrl: bundleItems[0]?.imageUrl || '',   // first item's image as cover
+    images: bundleItems.map(b => b.imageUrl).filter(Boolean),
+    level: bundleItems[0]?.level || '',
+    program: bundleItems[0]?.program || '',
+    stock: { 'bundle': 99 },        // bundles don't have per-size stock
+    prices: { 'bundle': finalPrice },
+    createdAt: new Date(),
+    salePrice: null,
+    isLimited: false,
+    limitedUntil: null,
+  };
+
+  const btn = document.getElementById('cbPublishBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-icons">hourglass_empty</span> Publishing…';
+
+  try {
+    await window._cbSaveBundle(data);
+    noteEl.className = 'cb-footer-note ok';
+    noteEl.textContent = '✓ Bundle published!';
+    setTimeout(() => closeCreateBundleModal(), 900);
+  } catch(e) {
+    console.error(e);
+    noteEl.className = 'cb-footer-note error';
+    noteEl.textContent = '⚠ Failed to save. Check console.';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-icons">rocket_launch</span> Publish Bundle';
+  }
+}
+
+// Live preview on name change
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('cbName')?.addEventListener('input', cbRecalc);
+  document.getElementById('cbDiscount')?.addEventListener('input', cbRecalc);
+});
+
+window.openBundleTypeChooser = openBundleTypeChooser;
+window.closeBundleTypeChooser = closeBundleTypeChooser;
+window.openCreateBundleModal = openCreateBundleModal;
+window.closeCreateBundleModal = closeCreateBundleModal;
+window.cbToggleProduct = cbToggleProduct;
+window.cbFilterProducts = cbFilterProducts;
+window.cbPublishBundle = cbPublishBundle;
+window.cbRecalc = cbRecalc;
+</script>
+
+</body>
+</html>
