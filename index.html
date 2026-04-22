@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniCheck | School Official Merchandise Platform</title>
+  <link rel="icon" type="image/x-icon" href="/assets/logo-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="landing-page">
+
+<!-- SPLASH -->
+<div id="splashScreen" class="splash">
+  <div class="splash-bg">
+    <div class="splash-orb orb1"></div><div class="splash-orb orb2"></div><div class="splash-orb orb3"></div>
+    <div class="splash-grid"></div>
+  </div>
+  <div class="splash-content">
+    <div class="splash-logo-wrap">
+      <img src="assets/logo-full-blue.png" alt="UniCheck" class="splash-logo" onerror="this.src='assets/logo-icon.png'">
+    </div>
+    <p class="splash-tagline">Official School Merchandise Platform</p>
+    <div class="splash-loader-wrap">
+      <div class="splash-bar"><div class="splash-fill" id="splashFill"></div></div>
+      <span class="splash-pct" id="splashPct">0%</span>
+    </div>
+    <div class="splash-dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- LANDING PAGE -->
+<div id="landingPage" style="display:none;">
+
+<!-- NAV -->
+<nav class="lp-nav" id="lpNav">
+  <div class="lp-nav-inner">
+    <a href="#" class="lp-logo">
+      <img src="assets/logo-icon.png" alt="" onerror="this.style.display='none'">
+      <span>Uni<em>Check</em></span>
+    </a>
+    <ul class="lp-nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="lp-nav-actions">
+      <button class="lp-btn-ghost" onclick="openAuthModal('login')">Sign In</button>
+      <button class="lp-btn-primary" onclick="openAuthModal('register')">Get Started <span class="material-icons" style="font-size:16px;vertical-align:middle;">arrow_forward</span></button>
+    </div>
+    <button class="lp-hamburger" id="lpHam" aria-label="Toggle menu" aria-expanded="false">
+      <span class="material-icons">menu</span>
+      <span class="lp-ham-box" aria-hidden="true">
+        <span class="lp-ham-bar"></span>
+        <span class="lp-ham-bar"></span>
+        <span class="lp-ham-bar"></span>
+      </span>
+    </button>
+  </div>
+  <div class="lp-mnav" id="lpMNav">
+    <a href="#features" onclick="closeMnav()">Features</a>
+    <a href="#why" onclick="closeMnav()">Why Us</a>
+    <a href="#how" onclick="closeMnav()">How It Works</a>
+    <a href="#contact" onclick="closeMnav()">Contact</a>
+    <div class="lp-mnav-btns">
+      <button class="lp-btn-ghost" onclick="closeMnav();openAuthModal('login')">Sign In</button>
+      <button class="lp-btn-primary" onclick="closeMnav();openAuthModal('register')">Get Started</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="lp-hero">
+  <div class="lp-hero-bg">
+    <div class="lp-horb lp-horb-a"></div>
+    <div class="lp-horb lp-horb-b"></div>
+    <div class="lp-hero-grid-lines"></div>
+  </div>
+  <div class="lp-hero-inner">
+    <div class="lp-hero-left">
+      <div class="lp-hero-badge"><span class="material-icons" style="font-size:13px;">verified</span> Unicheck Official Platform · 2026</div>
+      <h1 class="lp-hero-h1">Your School Merch,<br><span class="lp-h1-accent">Ordered Online.</span></h1>
+      <p class="lp-hero-p">UniCheck is the official digital store for school uniforms and campus accessories. Shop from your phone, pay securely, and track every order in real-time.</p>
+      <div class="lp-hero-actions">
+        <button class="lp-btn-primary lp-btn-lg" onclick="openAuthModal('register')">
+          Start Shopping <span class="material-icons">arrow_forward</span>
+        </button>
+        <button class="lp-btn-ghost lp-btn-lg" onclick="openAuthModal('login')">
+          <span class="material-icons">login</span> Sign In
+        </button>
+      </div>
+      <div class="lp-hero-trust">
+        <div class="lp-trust-pill"><span class="material-icons">lock</span> Firebase Secured</div>
+        <div class="lp-trust-pill"><span class="material-icons">school</span> Campus Exclusive</div>
+        <div class="lp-trust-pill"><span class="material-icons">payments</span> Digital Payments</div>
+      </div>
+    </div>
+    <div class="lp-hero-right">
+      <!-- Phone mockup -->
+      <div class="lp-phone">
+        <div class="lp-phone-body">
+          <div class="lp-phone-notch"></div>
+          <div class="lp-phone-screen-inner">
+            <div class="lp-pscreen-nav">
+              <img src="assets/logo-icon.png" style="height:18px;" onerror="this.style.display='none'">
+              <span style="font-weight:800;font-size:.78rem;color:#003a80;">UniCheck</span>
+              <span class="material-icons" style="color:#003a80;font-size:18px;">shopping_bag</span>
+            </div>
+            <div class="lp-pscreen-banner">Unicheck Official Store 2026</div>
+            <div class="lp-pscreen-cards">
+              <div class="lp-pscard lp-pscard-blue"><span class="material-icons" style="font-size:18px;">checkroom</span><div><b>Uniforms</b><small>All levels</small></div></div>
+              <div class="lp-pscard lp-pscard-yellow"><span class="material-icons" style="font-size:18px;">style</span><div><b style="color:#003a80;">Lanyards</b><small style="color:#555;">New 2026</small></div></div>
+            </div>
+            <div class="lp-pscreen-items">
+              <div class="lp-pitem"><div class="lp-pitem-img"></div><div class="lp-pitem-info"><b>BSIT Polo Shirt</b><span>₱350</span></div><span class="lp-pitem-tag">New</span></div>
+              <div class="lp-pitem"><div class="lp-pitem-img" style="background:#dbeafe;"></div><div class="lp-pitem-info"><b>Tourism Set</b><span>₱1,200</span></div><span class="lp-pitem-tag lp-tag-sale">Sale</span></div>
+              <div class="lp-pitem"><div class="lp-pitem-img" style="background:#dcfce7;"></div><div class="lp-pitem-info"><b>JHS Uniform</b><span>₱890</span></div><span class="lp-pitem-tag lp-tag-hot">Hot</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="lp-phone-glow"></div>
+      </div>
+      <!-- Floating cards -->
+      <div class="lp-fbadge lp-fbadge-1 lp-float-a">
+        <span class="material-icons" style="color:#00C87A;font-size:20px;">check_circle</span>
+        <div><b>Order Placed!</b><small>Processing now</small></div>
+      </div>
+      <div class="lp-fbadge lp-fbadge-2 lp-float-b">
+        <span class="material-icons" style="color:#0057B8;font-size:20px;">qr_code_2</span>
+        <div><b>Digital Invoice</b><small>Scan anytime</small></div>
+      </div>
+      <div class="lp-fbadge lp-fbadge-3 lp-float-c">
+        <span class="material-icons" style="color:#FFB800;font-size:20px;">star</span>
+        <div><b>4.9 Rating</b><small>By students</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="lp-scroll-cue"><span class="material-icons">expand_more</span></div>
+</section>
+
+<!-- STATS -->
+<div class="lp-stats">
+  <div class="lp-stats-inner">
+    <div class="lp-stat"><span class="lp-stat-n">100+</span><span class="lp-stat-l">Products</span></div>
+    <div class="lp-stat-sep"></div>
+    <div class="lp-stat"><span class="lp-stat-n">50+</span><span class="lp-stat-l">School Campuses</span></div>
+    <div class="lp-stat-sep"></div>
+    <div class="lp-stat"><span class="lp-stat-n">100%</span><span class="lp-stat-l">Secure Payments</span></div>
+    <div class="lp-stat-sep"></div>
+    <div class="lp-stat"><span class="lp-stat-n">Live</span><span class="lp-stat-l">Order Tracking</span></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="lp-sec lp-sec-light" id="features">
+  <div class="lp-sec-inner">
+    <div class="lp-sec-hdr">
+      <span class="lp-sec-tag">Key Features</span>
+      <h2 class="lp-sec-title">Everything you need,<br><span class="lp-h-accent">all in one place.</span></h2>
+      <p class="lp-sec-desc">UniCheck brings the entire school merchandise experience online — from browsing to payment to delivery tracking.</p>
+    </div>
+    <div class="lp-feat-grid">
+      <div class="lp-feat lp-feat-wide lp-animate">
+        <div class="lp-feat-icon" style="background:linear-gradient(135deg,#003a80,#0057B8);"><span class="material-icons">inventory_2</span></div>
+        <h3>Live Inventory</h3>
+        <p>Real-time stock per size so you always know what's available before ordering.</p>
+        <div class="lp-stock-visual">
+          <div class="lp-sv-row"><span>S</span><div class="lp-sv-bar"><div style="width:85%;background:#00C87A;"></div></div><span>85%</span></div>
+          <div class="lp-sv-row"><span>M</span><div class="lp-sv-bar"><div style="width:40%;background:#FFB800;"></div></div><span>40%</span></div>
+          <div class="lp-sv-row"><span>L</span><div class="lp-sv-bar"><div style="width:70%;background:#00C87A;"></div></div><span>70%</span></div>
+          <div class="lp-sv-row"><span>XL</span><div class="lp-sv-bar"><div style="width:12%;background:#FF3B3B;"></div></div><span>12%</span></div>
+        </div>
+      </div>
+      <div class="lp-feat lp-animate">
+        <div class="lp-feat-icon" style="background:linear-gradient(135deg,#00C87A,#009a5a);"><span class="material-icons">verified_user</span></div>
+        <h3>Secure Auth</h3>
+        <p>Firebase-powered login. Only verified enrolled students can access the store.</p>
+      </div>
+      <div class="lp-feat lp-animate">
+        <div class="lp-feat-icon" style="background:linear-gradient(135deg,#FF6B35,#cc3300);"><span class="material-icons">qr_code_2</span></div>
+        <h3>Digital Invoice</h3>
+        <p>Every order generates a QR-coded receipt you can print or present at the counter.</p>
+      </div>
+      <div class="lp-feat lp-animate">
+        <div class="lp-feat-icon" style="background:linear-gradient(135deg,#7B61FF,#5B3FD8);"><span class="material-icons">location_on</span></div>
+        <h3>Live Order Tracking</h3>
+        <p>Track from pending to delivered with status updates and Google Maps integration.</p>
+      </div>
+      <div class="lp-feat lp-animate">
+        <div class="lp-feat-icon" style="background:linear-gradient(135deg,#FFB800,#cc8800);"><span class="material-icons">chat</span></div>
+        <h3>Live Support</h3>
+        <p>Built-in chat connects you directly to the campus admin for fast responses.</p>
+      </div>
+      <div class="lp-feat lp-feat-wide lp-animate">
+        <div class="lp-feat-icon" style="background:linear-gradient(135deg,#0057B8,#00b4d8);"><span class="material-icons">payments</span></div>
+        <h3>Multiple Payment Methods</h3>
+        <p>Cash on Claim, GCash, Maya, or PayPal — with QR code scanning and reference number verification.</p>
+        <div class="lp-pay-row">
+          <span class="lp-pay-chip">💵 Cash</span>
+          <span class="lp-pay-chip" style="background:#e6fff5;color:#00874a;">📱 GCash</span>
+          <span class="lp-pay-chip" style="background:#dbeafe;color:#1d4ed8;">💳 Maya</span>
+          <span class="lp-pay-chip" style="background:#eff6ff;color:#0070BA;">🅿️ PayPal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY UNICCHECK -->
+<section class="lp-sec lp-sec-dark" id="why">
+  <div class="lp-sec-inner">
+    <div class="lp-sec-hdr">
+      <span class="lp-sec-tag lp-tag-inv">Why UniCheck?</span>
+      <h2 class="lp-sec-title" style="color:#fff;">The smarter way to shop<br><span style="color:#FFD600;">for school merchandise.</span></h2>
+      <p class="lp-sec-desc" style="color:rgba(255,255,255,.7);">Forget long queues at the campus store. UniCheck puts the entire catalog in your pocket.</p>
+    </div>
+    <div class="lp-why-grid">
+      <div class="lp-why lp-animate"><div class="lp-why-n">01</div><span class="material-icons lp-why-ic">schedule</span><h3>Save Time</h3><p>Order in minutes from your phone. No more waiting in line at the merchandise counter.</p></div>
+      <div class="lp-why lp-animate"><div class="lp-why-n">02</div><span class="material-icons lp-why-ic">price_check</span><h3>Best Prices</h3><p>Official pricing with sale events and promo codes. Get the best deals on gears.</p></div>
+      <div class="lp-why lp-animate"><div class="lp-why-n">03</div><span class="material-icons lp-why-ic">local_shipping</span><h3>Delivered to You</h3><p>Choose home delivery or on-site pick-up. Your order is prepared and ready when you are.</p></div>
+      <div class="lp-why lp-animate"><div class="lp-why-n">04</div><span class="material-icons lp-why-ic">star_rate</span><h3>Rate & Review</h3><p>Share feedback on products and read what fellow students think before you buy.</p></div>
+    </div>
+    <!-- Testimonials -->
+    <div class="lp-testis">
+      <div class="lp-testi lp-animate">
+        <div class="lp-testi-stars">★★★★★</div>
+        <p>"Super convenient! I ordered my BSIT uniform during lunch and picked it up the next day."</p>
+        <div class="lp-testi-who"><div class="lp-testi-av" style="background:#FFD600;color:#003a80;">A</div><div><b>Aaron P.</b><small>STI Las Piñas · BSIT</small></div></div>
+      </div>
+      <div class="lp-testi lp-animate">
+        <div class="lp-testi-stars">★★★★★</div>
+        <p>"The QR invoice is a game changer. No more lost receipts. Everything is tracked perfectly."</p>
+        <div class="lp-testi-who"><div class="lp-testi-av" style="background:#0057B8;">M</div><div><b>Mark M.</b><small>STI Cubao · BSIT</small></div></div>
+      </div>
+      <div class="lp-testi lp-animate">
+        <div class="lp-testi-stars">★★★★★</div>
+        <p>"GCash payment was smooth and the admin approved my order within the hour. Highly recommend!"</p>
+        <div class="lp-testi-who"><div class="lp-testi-av" style="background:#00C87A;">A</div><div><b>Aaron A.</b><small>STI Fairview · BSCS</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="lp-sec lp-sec-light" id="how">
+  <div class="lp-sec-inner">
+    <div class="lp-sec-hdr">
+      <span class="lp-sec-tag">How It Works</span>
+      <h2 class="lp-sec-title">Shop in <span class="lp-h-accent">3 easy steps.</span></h2>
+      <p class="lp-sec-desc">Getting your school merchandise has never been this simple.</p>
+    </div>
+    <div class="lp-steps">
+      <div class="lp-step lp-animate">
+        <div class="lp-step-n">1</div>
+        <div class="lp-step-ic"><span class="material-icons">person_add</span></div>
+        <h3>Create Account</h3>
+        <p>Register with your official School email. Your campus is detected automatically.</p>
+      </div>
+      <div class="lp-step-arrow"><span class="material-icons">arrow_forward</span></div>
+      <div class="lp-step lp-animate">
+        <div class="lp-step-n">2</div>
+        <div class="lp-step-ic"><span class="material-icons">shopping_bag</span></div>
+        <h3>Browse & Order</h3>
+        <p>Explore the catalog by level. Select size, add to cart, apply promo codes.</p>
+      </div>
+      <div class="lp-step-arrow"><span class="material-icons">arrow_forward</span></div>
+      <div class="lp-step lp-animate">
+        <div class="lp-step-n">3</div>
+        <div class="lp-step-ic"><span class="material-icons">inventory</span></div>
+        <h3>Pay & Track</h3>
+        <p>Pay digitally or on pick-up. Get a QR invoice and track your order live.</p>
+      </div>
+    </div>
+    <div class="lp-cta-strip">
+      <div><h3>Ready to get started?</h3><p>Join thousands of STI students already using UniCheck.</p></div>
+      <button class="lp-btn-primary lp-btn-lg" onclick="openAuthModal('register')">Create Free Account <span class="material-icons">arrow_forward</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="lp-sec" id="contact" style="background:var(--lp-bg2,#F0F4FF);">
+  <div class="lp-sec-inner">
+    <div class="lp-contact-wrap">
+      <div class="lp-contact-left">
+        <span class="lp-sec-tag">Get In Touch</span>
+        <h2 class="lp-sec-title">Have a question?<br><span class="lp-h-accent">We're here.</span></h2>
+        <p class="lp-sec-desc" style="margin-bottom:28px;">Reach out for help with orders, account issues, or product questions.</p>
+        <div class="lp-cinfo-list">
+          <div class="lp-cinfo lp-animate"><div class="lp-cinfo-ic"><span class="material-icons">schedule</span></div><div><b>Store Hours</b><p>Mon–Fri: 8AM–5PM · Sat: 8AM–12PM</p></div></div>
+          <div class="lp-cinfo lp-animate"><div class="lp-cinfo-ic"><span class="material-icons">email</span></div><div><b>Email</b><p>merchandise@sti.edu.ph</p></div></div>
+          <div class="lp-cinfo lp-animate"><div class="lp-cinfo-ic"><span class="material-icons">location_on</span></div><div><b>Location</b><p>Your School Campus Merchandise Counter</p></div></div>
+        </div>
+      </div>
+      <div class="lp-contact-right">
+        <form class="lp-cform" id="contactForm" onsubmit="handleContactForm(event)">
+          <h3>Send us a message</h3>
+          <div class="lp-cform-row">
+            <div class="lp-cform-g"><label>Full Name</label><input type="text" id="cf_name" placeholder="Juan dela Cruz" required></div>
+            <div class="lp-cform-g"><label>School Email</label><input type="email" id="cf_email" placeholder="yourname@campus.sti.edu.ph" required></div>
+          </div>
+          <div class="lp-cform-g"><label>Subject</label>
+            <select id="cf_subject"><option value="order">Order Inquiry</option><option value="account">Account Issue</option><option value="product">Product Question</option><option value="payment">Payment Concern</option><option value="other">Other</option></select>
+          </div>
+          <div class="lp-cform-g"><label>Message</label><textarea id="cf_message" placeholder="Tell us how we can help..." rows="4" required></textarea></div>
+          <button type="submit" class="lp-cform-btn" id="cfSubmitBtn"><span class="material-icons">send</span> Send Message</button>
+          <p id="cfMsg" style="text-align:center;font-size:.82rem;margin-top:10px;min-height:16px;"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="lp-footer">
+  <div class="lp-footer-inner">
+    <div class="lp-footer-brand">
+      <div class="lp-footer-logo">
+        <img src="assets/logo-icon.png" alt="" onerror="this.style.display='none'">
+        <span>Uni<span style="color:#FFD600;">Check</span></span>
+      </div>
+      <p>The official digital merchandise platform for School students. Shop smart, study proud.</p>
+      <div class="lp-footer-social">
+        <a href="#"><span class="material-icons">facebook</span></a>
+        <a href="#"><span class="material-icons">email</span></a>
+        <a href="#"><span class="material-icons">phone</span></a>
+      </div>
+    </div>
+    <div class="lp-fcol">
+      <button class="lp-fcol-toggle" onclick="toggleFooterCol(this)">Platform <span class="material-icons lp-fcol-arrow">expand_more</span></button>
+      <div class="lp-fcol-body">
+        <a href="#features">Features</a><a href="#why">Why UniCheck</a><a href="#how">How It Works</a><a href="#" onclick="openAuthModal('register');return false;">Sign Up</a>
+      </div>
+    </div>
+    <div class="lp-fcol">
+      <button class="lp-fcol-toggle" onclick="toggleFooterCol(this)">Shop <span class="material-icons lp-fcol-arrow">expand_more</span></button>
+      <div class="lp-fcol-body">
+        <a href="#" onclick="openAuthModal('login');return false;">College</a><a href="#" onclick="openAuthModal('login');return false;">Senior High</a><a href="#" onclick="openAuthModal('login');return false;">Junior High</a><a href="#" onclick="openAuthModal('login');return false;">Accessories</a>
+      </div>
+    </div>
+    <div class="lp-fcol">
+      <button class="lp-fcol-toggle" onclick="toggleFooterCol(this)">Legal <span class="material-icons lp-fcol-arrow">expand_more</span></button>
+      <div class="lp-fcol-body">
+        <a href="#" onclick="openLpModal('terms');return false;">Terms &amp; Conditions</a><a href="#" onclick="openLpModal('privacy');return false;">Privacy Policy</a><a href="#contact">Contact Us</a><a href="#" onclick="openCreditsModal();return false;">Meet the Team</a>
+      </div>
+    </div>
+  </div>
+  <div class="lp-footer-bot">
+    <p>© 2026 UniCheck · School Official Merchandise Platform. All rights reserved.</p>
+    <div><a href="#" onclick="openLpModal('terms');return false;">Terms</a><a href="#" onclick="openLpModal('privacy');return false;">Privacy</a><a href="#contact">Contact</a></div>
+  </div>
+</footer>
+
+</div><!-- /landingPage -->
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="lp-auth-overlay" style="display:none;">
+  <div class="lp-auth-box" id="authBox">
+    <button class="lp-auth-x" onclick="closeAuthModal()"><span class="material-icons">close</span></button>
+    <div class="lp-auth-tabs">
+      <button class="lp-atab active" id="aTabLogin" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="lp-atab" id="aTabRegister" onclick="switchAuthTab('register')">Register</button>
+    </div>
+    <!-- LOGIN -->
+    <div id="loginBox" class="lp-aform">
+      <div class="lp-aform-logo"></div>
+      <h2 class="form-title">Welcome User</h2>
+      <p class="subtitle">Sign in to your UniCheck account.</p>
+      <form id="loginForm" novalidate>
+        <div class="float-group">
+          <span class="fi material-icons">alternate_email</span>
+          <input type="email" id="loginEmail" class="float-input" placeholder=" " required autocomplete="email">
+          <label class="float-label" for="loginEmail">School Email</label>
+        </div>
+        <div class="float-group">
+          <span class="fi material-icons">lock</span>
+          <input type="password" id="loginPassword" class="float-input" placeholder=" " required autocomplete="current-password">
+          <label class="float-label" for="loginPassword">Password</label>
+          <button type="button" class="eye-btn" onclick="togglePassword('loginPassword',this)" tabindex="-1"><span class="material-icons">visibility</span></button>
+        </div>
+        <div class="form-meta-row">
+          <label class="check-label"><input type="checkbox" id="rememberMe"> Remember me</label>
+          <a href="#" id="forgotPasswordLink" class="forgot-link">Forgot Password?</a>
+        </div>
+        <button type="submit" class="main-btn" id="loginSubmitBtn">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-arrow material-icons">arrow_forward</span>
+          <span class="btn-loader" id="loginLoader" style="display:none;"></span>
+        </button>
+      </form>
+      <p class="footer-link">New student? <a class="switch-link" onclick="switchAuthTab('register');return false;" id="toRegister">Register here</a></p>
+    </div>
+    <!-- REGISTER -->
+    <div id="registerBox" class="lp-aform" style="display:none;">
+      <h2 class="form-title">Create Account</h2>
+      <p class="subtitle">Join the UniCheck community today.</p>
+      <form id="registerForm" novalidate>
+        <div class="float-group">
+          <span class="fi material-icons">alternate_email</span>
+          <input type="email" id="regEmail" class="float-input" placeholder=" " required autocomplete="email">
+          <label class="float-label" for="regEmail">School Email</label>
+          <span class="field-hint" id="campusDetected">Campus auto-detected from your email</span>
+        </div>
+        <div class="auth-row">
+          <div class="float-group">
+            <span class="fi material-icons">school</span>
+            <input type="text" id="regCampus" class="float-input" placeholder=" " readonly style="cursor:not-allowed;opacity:.7;">
+            <label class="float-label" for="regCampus">Campus</label>
+          </div>
+          <div class="float-group">
+            <span class="fi material-icons">phone</span>
+            <input type="tel" id="regPhone" class="float-input" placeholder=" " required>
+            <label class="float-label" for="regPhone">Phone</label>
+          </div>
+        </div>
+        <div class="float-group">
+          <span class="fi material-icons">home</span>
+          <input type="text" id="regAddress" class="float-input" placeholder=" " required>
+          <label class="float-label" for="regAddress">Home Address</label>
+        </div>
+        <div class="auth-row">
+          <div class="float-group">
+            <span class="fi material-icons">lock</span>
+            <input type="password" id="regPassword" class="float-input" placeholder=" " required>
+            <label class="float-label" for="regPassword">Password</label>
+            <button type="button" class="eye-btn" onclick="togglePassword('regPassword',this)" tabindex="-1"><span class="material-icons">visibility</span></button>
+          </div>
+          <div class="float-group">
+            <span class="fi material-icons">lock_outline</span>
+            <input type="password" id="confirmPassword" class="float-input" placeholder=" " required>
+            <label class="float-label" for="confirmPassword">Confirm</label>
+            <button type="button" class="eye-btn" onclick="togglePassword('confirmPassword',this)" tabindex="-1"><span class="material-icons">visibility</span></button>
+          </div>
+        </div>
+        <div class="pw-strength-wrap" id="pwStrengthWrap" style="display:none;">
+          <div class="pw-bar"><div class="pw-fill" id="pwFill"></div></div>
+          <span class="pw-label" id="pwLabel">Strength</span>
+        </div>
+        <div class="terms-row">
+          <input type="checkbox" id="termsCheck">
+          <label for="termsCheck" class="terms-label">I agree to the <a href="#" onclick="openLpModal('terms');return false;">Terms &amp; Conditions</a> and <a href="#" onclick="openLpModal('privacy');return false;">Privacy Policy</a>.</label>
+        </div>
+        <button type="submit" class="main-btn" id="regSubmitBtn">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-arrow material-icons">arrow_forward</span>
+          <span class="btn-loader" id="regLoader" style="display:none;"></span>
+        </button>
+      </form>
+      <p class="footer-link">Already a member? <a class="switch-link" onclick="switchAuthTab('login');return false;" id="toLogin">Login here</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Popup -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-card">
+    <div class="loader" id="popupLoader"></div>
+    <div class="popup-icon" id="popupIcon">!</div>
+    <h3 id="popupTitle">Notification</h3>
+    <p id="popupMessage">Please wait...</p>
+    <button class="popup-btn" id="closePopup">Okay</button>
+  </div>
+</div>
+
+<!-- Terms -->
+<div id="termsModal" class="legal-overlay" style="display:none;">
+  <div class="legal-card">
+    <div class="legal-header"><h2>Terms &amp; Conditions</h2><button onclick="document.getElementById('termsModal').style.display='none'" class="legal-close">&times;</button></div>
+    <div class="legal-body">
+      <p><strong>1. Eligibility.</strong> UniCheck is exclusively available to currently enrolled school students with an active School institutional email (*.sti.edu.ph).</p>
+      <p><strong>2. Account Responsibility.</strong> You are responsible for maintaining the confidentiality of your credentials.</p>
+      <p><strong>3. Purchases.</strong> All sales are final. Orders may be cancelled only while in "Pending" status.</p>
+      <p><strong>4. Pricing.</strong> Prices are set by the Prowear campus store and subject to change without notice.</p>
+      <p><strong>5. Delivery.</strong> Home delivery is subject to a shipping fee determined by the campus administrator.</p>
+      <p><strong>6. QR Payments.</strong> Reference numbers must be entered accurately. Admin will verify before processing.</p>
+      <p><strong>7. Changes.</strong> These terms may be updated at any time. Continued use constitutes acceptance.</p>
+    </div>
+    <button onclick="document.getElementById('termsModal').style.display='none'" class="legal-btn">I Understand</button>
+  </div>
+</div>
+
+<!-- Privacy -->
+<div id="privacyModal" class="legal-overlay" style="display:none;">
+  <div class="legal-card">
+    <div class="legal-header"><h2>Privacy Policy</h2><button onclick="document.getElementById('privacyModal').style.display='none'" class="legal-close">&times;</button></div>
+    <div class="legal-body">
+      <p><strong>Data We Collect.</strong> School email, name, phone, address, campus, and order history.</p>
+      <p><strong>How We Use It.</strong> Solely for order processing, account management, and communications.</p>
+      <p><strong>Storage.</strong> Stored securely in Google Firebase. We do not sell your data.</p>
+      <p><strong>Your Rights.</strong> Update your information through account settings at any time.</p>
+    </div>
+    <button onclick="document.getElementById('privacyModal').style.display='none'" class="legal-btn">Got It</button>
+  </div>
+</div>
+
+<!-- BACK TO TOP BUTTON -->
+<button id="backToTop" aria-label="Back to top" title="Back to top">
+  <div class="btt-ring"></div>
+  <div class="btt-ring btt-ring-2"></div>
+  <span class="material-icons btt-icon">keyboard_arrow_up</span>
+  <svg class="btt-progress-svg" viewBox="0 0 44 44">
+    <circle class="btt-track" cx="22" cy="22" r="19"/>
+    <circle class="btt-fill" id="bttCircle" cx="22" cy="22" r="19"/>
+  </svg>
+</button>
+
+<script>
+(function(){
+  const fill=document.getElementById('splashFill'),pct=document.getElementById('splashPct');
+  let n=0,done=false;
+  const iv=setInterval(()=>{
+    if(done)return;n+=(Math.random()*15+3)*(1-n/110);
+    if(n>=100){n=100;done=true;clearInterval(iv);}
+    if(fill)fill.style.width=n+'%';if(pct)pct.innerText=Math.floor(n)+'%';
+    if(done)setTimeout(()=>{
+      const s=document.getElementById('splashScreen'),lp=document.getElementById('landingPage');
+      s.classList.add('splash-out');
+      setTimeout(()=>{s.style.display='none';lp.style.display='block';lp.style.animation='lpFadeIn .5s ease both';},650);
+    },280);
+  },70);
+})();
+
+/* Nav */
+const lpHam=document.getElementById('lpHam'),lpMNav=document.getElementById('lpMNav');
+lpHam?.addEventListener('click',()=>{
+  const isOpen = lpMNav.classList.toggle('open');
+  lpHam.classList.toggle('is-open', isOpen);
+  lpHam.setAttribute('aria-expanded', isOpen);
+});
+function closeMnav(){
+  lpMNav?.classList.remove('open');
+  lpHam?.classList.remove('is-open');
+  lpHam?.setAttribute('aria-expanded','false');
+}
+window.addEventListener('scroll',()=>document.getElementById('lpNav')?.classList.toggle('lp-nav-scrolled',window.scrollY>60));
+
+/* Auth modal */
+function openAuthModal(tab){
+  document.getElementById('authModal').style.display='flex';
+  document.body.style.overflow='hidden';
+  switchAuthTab(tab||'login');
+}
+function closeAuthModal(){document.getElementById('authModal').style.display='none';document.body.style.overflow='';}
+function switchAuthTab(t){
+  const lb=document.getElementById('loginBox'),rb=document.getElementById('registerBox');
+  const tl=document.getElementById('aTabLogin'),tr=document.getElementById('aTabRegister');
+  if(t==='login'){lb.style.display='block';rb.style.display='none';tl.classList.add('active');tr.classList.remove('active');}
+  else{lb.style.display='none';rb.style.display='block';tl.classList.remove('active');tr.classList.add('active');}
+}
+document.getElementById('authModal')?.addEventListener('click',e=>{if(e.target===document.getElementById('authModal'))closeAuthModal();});
+window.openAuthModal=openAuthModal;window.closeAuthModal=closeAuthModal;window.switchAuthTab=switchAuthTab;
+
+// Show notice if redirected from menu due to unverified email
+if(new URLSearchParams(window.location.search).get('unverified')==='1'){
+  setTimeout(()=>{
+    openAuthModal('login');
+    const notice=document.createElement('div');
+    notice.style.cssText='margin:10px 0 4px;padding:10px 14px;background:#FFF3CD;border:1.5px solid #FFB800;border-radius:10px;font-size:.82rem;color:#7a5c00;line-height:1.5;';
+    notice.innerHTML='<strong>⚠ Email not verified.</strong><br>Please verify your email before signing in. Check your STI inbox for the verification link.';
+    const loginBox=document.getElementById('loginBox');
+    if(loginBox) loginBox.insertBefore(notice, loginBox.firstChild);
+  },600);
+}
+
+/* Legal */
+function openLpModal(t){if(t==='terms')document.getElementById('termsModal').style.display='flex';else document.getElementById('privacyModal').style.display='flex';}
+window.openLpModal=openLpModal;
+function openTermsModal(e){e.preventDefault();openLpModal('terms');}
+function openPrivacyModal(e){e.preventDefault();openLpModal('privacy');}
+
+/* Password toggle */
+function togglePassword(id,btn){
+  const el=document.getElementById(id),ic=btn.querySelector('.material-icons');
+  el.type=el.type==='password'?'text':'password';
+  ic.innerText=el.type==='password'?'visibility':'visibility_off';
+}
+window.togglePassword=togglePassword;
+
+/* Contact form */
+async function handleContactForm(e){
+  e.preventDefault();
+  const btn=document.getElementById('cfSubmitBtn'),msgEl=document.getElementById('cfMsg');
+  btn.disabled=true;btn.innerHTML='<span class="material-icons">hourglass_empty</span> Sending...';
+  await new Promise(r=>setTimeout(r,1200));
+  msgEl.style.color='#00C87A';
+  msgEl.innerText="✓ Message sent! We'll get back to you within 1 business day.";
+  document.getElementById('contactForm').reset();
+  btn.disabled=false;btn.innerHTML='<span class="material-icons">send</span> Send Message';
+}
+window.handleContactForm=handleContactForm;
+
+/* Footer accordion (mobile) */
+function toggleFooterCol(btn){
+  const body=btn.nextElementSibling;
+  const arrow=btn.querySelector('.lp-fcol-arrow');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  if(arrow) arrow.style.transform=isOpen?'':'rotate(180deg)';
+}
+window.toggleFooterCol=toggleFooterCol;
+
+/* Float labels & pw strength */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.float-input').forEach(el=>{
+    el.addEventListener('focus',()=>el.closest('.float-group')?.classList.add('is-focused'));
+    el.addEventListener('blur',()=>el.closest('.float-group')?.classList.remove('is-focused'));
+  });
+  const pw=document.getElementById('regPassword'),pwFil=document.getElementById('pwFill'),pwLbl=document.getElementById('pwLabel'),pwWrp=document.getElementById('pwStrengthWrap');
+  if(pw){pw.addEventListener('input',()=>{
+    const v=pw.value;pwWrp.style.display=v?'flex':'none';
+    let s=0;if(v.length>=6)s++;if(v.length>=10)s++;if(/[A-Z]/.test(v)&&/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;
+    const cfg=[{w:'15%',c:'#FF3B3B',t:'Too short'},{w:'30%',c:'#FF3B3B',t:'Weak'},{w:'55%',c:'#FF9500',t:'Fair'},{w:'78%',c:'#FFD600',t:'Good'},{w:'100%',c:'#00C87A',t:'Strong'}][Math.min(s,4)];
+    pwFil.style.width=cfg.w;pwFil.style.background=cfg.c;pwLbl.innerText=cfg.t;pwLbl.style.color=cfg.c;
+  });}
+  /* Animate on scroll */
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('lp-vis');obs.unobserve(e.target);}}),{threshold:.1});
+  document.querySelectorAll('.lp-animate').forEach(el=>obs.observe(el));
+  /* Smooth scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});
+  });
+
+  /* ── BACK TO TOP + SCROLL PROGRESS ── */
+  const btt=document.getElementById('backToTop');
+  const progressBar=null; // scroll progress bar removed
+  const bttCircle=document.getElementById('bttCircle');
+  const circumference=2*Math.PI*19; // r=19
+  if(bttCircle){bttCircle.style.strokeDasharray=circumference;bttCircle.style.strokeDashoffset=circumference;}
+
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const scrollTop=window.scrollY||document.documentElement.scrollTop;
+        const docHeight=document.documentElement.scrollHeight-window.innerHeight;
+        const pct=docHeight>0?scrollTop/docHeight:0;
+
+        /* Progress bar */
+        if(progressBar) progressBar.style.transform=`scaleX(${pct})`;
+
+        /* Circle progress */
+        if(bttCircle) bttCircle.style.strokeDashoffset=circumference*(1-pct);
+
+        /* Show/hide button — appear when near bottom (~85%) */
+        const nearBottom=pct>=0.85;
+        if(btt){
+          btt.classList.toggle('btt-visible',nearBottom);
+          btt.classList.toggle('btt-pulse',pct>=0.98);
+        }
+        ticking=false;
+      });
+      ticking=true;
+    }
+  });
+
+  if(btt){
+    btt.addEventListener('click',()=>{
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  }
+});
+</script>
+<script type="module" src="js/login.js"></script>
+
+<!-- CREDITS / CO-FOUNDERS MODAL -->
+<div id="creditsModal" class="credits-overlay" onclick="if(event.target===this)closeCreditsModal()">
+  <div class="credits-modal">
+    <div class="credits-modal-header">
+      <div class="credits-modal-title">
+        <span class="credits-modal-star">✦</span>
+        Meet the Co-Founders
+        <span class="credits-modal-star">✦</span>
+      </div>
+      <p class="credits-modal-sub">The six people who built UniCheck from scratch.</p>
+      <button class="credits-modal-close" onclick="closeCreditsModal()" aria-label="Close">&times;</button>
+    </div>
+    <div class="credits-modal-body">
+      <div class="credits-grid">
+
+        <div class="credits-card" style="--cd:0s">
+          <div class="credits-av" style="--c:#0057B8">
+            <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#0057B8" opacity=".18"/><circle cx="40" cy="30" r="14" fill="#0057B8" opacity=".65"/><ellipse cx="40" cy="68" rx="22" ry="16" fill="#0057B8" opacity=".55"/></svg>
+          </div>
+          <div class="credits-badge" style="--bc:#0057B8">Chief Executive</div>
+          <h3 class="credits-name">Alex Rivera</h3>
+          <p class="credits-about">Visionary leader who turned a campus pain point into a full-scale e-commerce platform. Drives product direction and growth.</p>
+          <blockquote class="credits-quote">"Technology should make student life simpler, not complicated."</blockquote>
+        </div>
+
+        <div class="credits-card" style="--cd:.06s">
+          <div class="credits-av" style="--c:#7B61FF">
+            <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#7B61FF" opacity=".18"/><circle cx="40" cy="30" r="14" fill="#7B61FF" opacity=".65"/><ellipse cx="40" cy="68" rx="22" ry="16" fill="#7B61FF" opacity=".55"/></svg>
+          </div>
+          <div class="credits-badge" style="--bc:#7B61FF">Lead Developer</div>
+          <h3 class="credits-name">Jordan Reyes</h3>
+          <p class="credits-about">Full-stack architect behind UniCheck's real-time order system and Firebase infrastructure. Built the entire platform from zero.</p>
+          <blockquote class="credits-quote">"Clean code is a love letter to the next developer."</blockquote>
+        </div>
+
+        <div class="credits-card" style="--cd:.12s">
+          <div class="credits-av" style="--c:#10B981">
+            <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#10B981" opacity=".18"/><circle cx="40" cy="30" r="14" fill="#10B981" opacity=".65"/><ellipse cx="40" cy="68" rx="22" ry="16" fill="#10B981" opacity=".55"/></svg>
+          </div>
+          <div class="credits-badge" style="--bc:#10B981">UX / UI Designer</div>
+          <h3 class="credits-name">Morgan Santos</h3>
+          <p class="credits-about">Designed every pixel of UniCheck — from the landing page to the admin portal. Champions accessibility and delight.</p>
+          <blockquote class="credits-quote">"Good design is invisible. Great design is unforgettable."</blockquote>
+        </div>
+
+        <div class="credits-card" style="--cd:.18s">
+          <div class="credits-av" style="--c:#F59E0B">
+            <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#F59E0B" opacity=".18"/><circle cx="40" cy="30" r="14" fill="#F59E0B" opacity=".65"/><ellipse cx="40" cy="68" rx="22" ry="16" fill="#F59E0B" opacity=".55"/></svg>
+          </div>
+          <div class="credits-badge" style="--bc:#F59E0B">Operations Lead</div>
+          <h3 class="credits-name">Sam Dela Cruz</h3>
+          <p class="credits-about">Bridges the gap between the platform and school admin offices. Manages inventory partnerships and real-world order fulfillment.</p>
+          <blockquote class="credits-quote">"Logistics is the backbone that makes every promise real."</blockquote>
+        </div>
+
+        <div class="credits-card" style="--cd:.24s">
+          <div class="credits-av" style="--c:#EC4899">
+            <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#EC4899" opacity=".18"/><circle cx="40" cy="30" r="14" fill="#EC4899" opacity=".65"/><ellipse cx="40" cy="68" rx="22" ry="16" fill="#EC4899" opacity=".55"/></svg>
+          </div>
+          <div class="credits-badge" style="--bc:#EC4899">Marketing Head</div>
+          <h3 class="credits-name">Casey Villanueva</h3>
+          <p class="credits-about">Crafted the UniCheck brand identity, social presence, and student onboarding campaigns that grew the platform to thousands of users.</p>
+          <blockquote class="credits-quote">"A brand is a story that never stops being told."</blockquote>
+        </div>
+
+        <div class="credits-card" style="--cd:.30s">
+          <div class="credits-av" style="--c:#FF6B35">
+            <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#FF6B35" opacity=".18"/><circle cx="40" cy="30" r="14" fill="#FF6B35" opacity=".65"/><ellipse cx="40" cy="68" rx="22" ry="16" fill="#FF6B35" opacity=".55"/></svg>
+          </div>
+          <div class="credits-badge" style="--bc:#FF6B35">Finance & Security</div>
+          <h3 class="credits-name">Riley Mendoza</h3>
+          <p class="credits-about">Handles payment gateway integrations, financial auditing, and data security. Ensures every transaction on UniCheck is safe.</p>
+          <blockquote class="credits-quote">"Trust is earned in digits and protected in systems."</blockquote>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openCreditsModal(){
+  document.getElementById('creditsModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCreditsModal(){
+  document.getElementById('creditsModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+</script>
+</body>
+</html>
