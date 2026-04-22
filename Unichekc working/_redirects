@@ -1,8 +1,0 @@
-# Serve clean URLs
-/menu     /menu.html    200
-/admin    /admin.html   200
-
-# Redirect .html → clean URL
-/menu.html    /menu    301
-/admin.html   /admin   301
-/index.html   /        301
